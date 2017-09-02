@@ -7,14 +7,22 @@ import java.util.concurrent.Executors;
 
 public class FlipperEventLoop {
 
+    private static FlipperEventLoop singleInstance;
     private ExecutorService poolExecutor;
 
-    public FlipperEventLoop(ExecutorService executorService) {
+    private FlipperEventLoop(ExecutorService executorService) {
         this.poolExecutor = poolExecutor;
     }
 
-    public FlipperEventLoop() {
+    private FlipperEventLoop() {
         this(Executors.newFixedThreadPool(1));
+    }
+
+    public static FlipperEventLoop getInstance() {
+        synchronized (singleInstance) {
+            if (singleInstance == null) singleInstance = new FlipperEventLoop();
+        }
+        return singleInstance;
     }
 
     public void enqueue(Task task) {
