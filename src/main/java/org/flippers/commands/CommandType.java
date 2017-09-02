@@ -1,9 +1,7 @@
-package vocabulary;
+package org.flippers.commands;
 
 public enum CommandType {
-    HANDSHAKE(HandshakeHandler.class),
     PING(PingHandler.class);
-
 
     private Class<?> handlerClass;
 

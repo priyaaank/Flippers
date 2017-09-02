@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package messages;
+
+option java_package = "org.flippers.messages";
+option java_outer_classname = "MessageProtos";
+
+message Message {
+
+    MessageType type = 1;
+    int64 sequenceNumber = 2;
+    int32 listenPort = 3;
+
+    enum MessageType {
+        PING = 0;
+        ACK = 1;
+        PING_NODE = 2;
+    };
+
+}
