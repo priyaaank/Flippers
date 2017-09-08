@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MessageListener {
 
-    private static final Integer DEFAULT_PORT = 8343;
+    public static Integer DEFAULT_PORT = 8343;
     public static final int DEFAULT_ONE_KB_BUFFER = 1024;
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageListener.class);
 
@@ -24,6 +24,7 @@ public class MessageListener {
     private DatagramSocket socket;
 
     public MessageListener(Integer port, MessageHandler messageHandler) {
+        DEFAULT_PORT = port;
         this.port = port;
         this.messageHandler = messageHandler;
     }

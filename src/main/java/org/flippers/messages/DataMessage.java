@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 
+import static org.flippers.agent.inbound.MessageListener.DEFAULT_PORT;
+
 public class DataMessage {
 
     static Logger LOGGER = LoggerFactory.getLogger(DataMessage.class);
@@ -19,21 +21,23 @@ public class DataMessage {
 
     public DataMessage(DatagramPacket packet) {
         this.inetAddress = packet.getAddress();
-        this.sourcePort = packet.getPort();
+        this.sourcePort = DEFAULT_PORT;
         populateFrom(decode(packet));
     }
 
-    public DataMessage(Long sequenceNumber, InetAddress address, MessageType messageType, Integer destinationPort) {
+    public DataMessage(Long sequenceNumber, InetAddress address, MessageType messageType, Integer destinationPort, Integer sourcePort) {
         this.sequenceNumber = sequenceNumber;
         this.inetAddress = address;
         this.messageType = messageType;
         this.destinationPort = destinationPort;
+        this.sourcePort = sourcePort;
     }
 
     public DatagramPacket toDatagramPacket() {
         MessageProtos.Message message = MessageProtos.Message.newBuilder().
                 setSequenceNumber(this.sequenceNumber)
                 .setType(MessageProtos.Message.MessageType.valueOf(this.messageType.toString()))
+                .setListenPort(this.sourcePort)
                 .build();
         byte[] rawData = message.toByteArray();
         return new DatagramPacket(rawData, rawData.length, this.inetAddress, this.destinationPort);

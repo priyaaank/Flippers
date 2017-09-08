@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public enum MessageType {
     PING(PingHandler.class),
-    PING_ACK(NoOp.class);
+    ACK(NoOp.class);
 
     private Class<?> handlerClass;
 

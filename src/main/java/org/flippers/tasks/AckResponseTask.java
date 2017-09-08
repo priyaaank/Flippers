@@ -18,10 +18,8 @@ public class AckResponseTask implements Task {
 
     @Override
     public void execute() {
-        DatagramSocket datagramSocket = null;
         try {
-            datagramSocket = new DatagramSocket();
-            datagramSocket.send(message.toDatagramPacket());
+            new DatagramSocket().send(message.toDatagramPacket());
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }

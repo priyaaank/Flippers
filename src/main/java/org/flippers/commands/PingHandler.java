@@ -5,6 +5,8 @@ import org.flippers.agent.inbound.MessageType;
 import org.flippers.agent.outbound.FlipperEventLoop;
 import org.flippers.tasks.AckResponseTask;
 
+import static org.flippers.agent.inbound.MessageListener.DEFAULT_PORT;
+
 public class PingHandler implements Command {
 
     private FlipperEventLoop eventLoop;
@@ -18,8 +20,9 @@ public class PingHandler implements Command {
         DataMessage ackMessage = new DataMessage(
                 dataMessage.getSequenceNumber(),
                 dataMessage.getInetAddress(),
-                MessageType.PING_ACK,
-                dataMessage.getDestinationPort()
+                MessageType.ACK,
+                dataMessage.getSourcePort(),
+                DEFAULT_PORT
         );
         this.eventLoop.enqueue(new AckResponseTask(ackMessage));
     }
