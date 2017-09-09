@@ -1,14 +1,12 @@
 package org.flippers.messages;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import org.flippers.agent.inbound.MessageType;
+import org.flippers.agent.MessageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-
-import static org.flippers.agent.inbound.MessageListener.DEFAULT_PORT;
 
 public class DataMessage {
 
@@ -21,7 +19,7 @@ public class DataMessage {
 
     public DataMessage(DatagramPacket packet) {
         this.inetAddress = packet.getAddress();
-        this.sourcePort = DEFAULT_PORT;
+//        this.destinationPort = DEFAULT_PORT;
         populateFrom(decode(packet));
     }
 
@@ -67,7 +65,7 @@ public class DataMessage {
         if (decodedMessage == null) return;
         this.sequenceNumber = decodedMessage.getSequenceNumber();
         this.messageType = MessageType.valueOf(decodedMessage.getType().toString());
-        this.destinationPort = decodedMessage.getListenPort();
+        this.sourcePort = decodedMessage.getListenPort();
     }
 
     private MessageProtos.Message decode(DatagramPacket packet) {

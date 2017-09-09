@@ -1,29 +1,29 @@
 package org.flippers.commands;
 
+import org.flippers.agent.MessageSender;
+import org.flippers.agent.MessageType;
+import org.flippers.config.Config;
 import org.flippers.messages.DataMessage;
-import org.flippers.agent.inbound.MessageType;
-import org.flippers.agent.outbound.FlipperEventLoop;
-import org.flippers.tasks.AckResponseTask;
-
-import static org.flippers.agent.inbound.MessageListener.DEFAULT_PORT;
 
 public class PingHandler implements Command {
 
-    private FlipperEventLoop eventLoop;
+    private MessageSender sender;
+    private Config config;
 
-    public PingHandler(FlipperEventLoop eventLoop) {
-        this.eventLoop = eventLoop;
+    public PingHandler(MessageSender sender, Config config) {
+        this.sender = sender;
+        this.config = config;
     }
 
     @Override
-    public void handle(DataMessage dataMessage) {
+    public void handle(DataMessage receivedMessage) {
         DataMessage ackMessage = new DataMessage(
-                dataMessage.getSequenceNumber(),
-                dataMessage.getInetAddress(),
+                receivedMessage.getSequenceNumber(),
+                receivedMessage.getInetAddress(),
                 MessageType.ACK,
-                dataMessage.getSourcePort(),
-                DEFAULT_PORT
+                receivedMessage.getSourcePort(),
+                config.getListenPort()
         );
-        this.eventLoop.enqueue(new AckResponseTask(ackMessage));
+        this.sender.send(ackMessage);
     }
 }

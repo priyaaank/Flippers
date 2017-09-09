@@ -1,8 +1,6 @@
 package org.flippers.agent;
 
 import org.flippers.messages.DataMessage;
-import org.flippers.agent.inbound.MessageListener;
-import org.flippers.agent.inbound.MessageType;
 import org.flippers.messages.MessageProtos;
 import org.junit.After;
 import org.junit.Before;
@@ -27,11 +25,13 @@ public class MessageListenerTest {
     DataMessage receivedMessage;
     MessageListener agent;
     MockPeerAgent peerAgent;
+    DatagramSocket socket;
 
     @Before
     public void setUp() throws Exception {
         awaitMessageHandling = new CountDownLatch(1);
-        this.agent = new MessageListener(portNumber, packet -> {
+        this.socket = new DatagramSocket(this.portNumber);
+        this.agent = new MessageListener(socket, packet -> {
             receivedMessage = packet;
             awaitMessageHandling.countDown();
         });
@@ -41,7 +41,7 @@ public class MessageListenerTest {
 
     @After
     public void tearDown() throws Exception {
-        agent.shutdownGracefully();
+        if (!socket.isClosed()) this.socket.close();
     }
 
     @Test
@@ -54,7 +54,7 @@ public class MessageListenerTest {
 
     @Test
     public void shouldNotAcceptMessagesPostShutdown() throws Exception {
-        agent.shutdownGracefully();
+        this.socket.close();
         peerAgent.sendPingMessage();
 
         assertFalse(awaitMessageHandling.await(1, TimeUnit.SECONDS));
