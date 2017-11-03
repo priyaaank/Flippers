@@ -58,7 +58,7 @@ public class FlipperAgentTest {
         DataMessage receivedMessage = this.receivedReceivedMessageHandler.message;
         assertThat(receivedMessage.getMessageType(), is(MessageType.ACK));
         assertThat(receivedMessage.getSequenceNumber(), is(1L));
-        assertThat(receivedMessage.getInetAddress().getHostAddress(), is(localIpAddress.getHostAddress()));
+        assertThat(receivedMessage.getSourceAddress().getHostAddress(), is(localIpAddress.getHostAddress()));
         assertThat(receivedMessage.getSourcePort(), is(this.portForAgentUnderTest));
     }
 

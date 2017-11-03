@@ -12,19 +12,19 @@ public class DataMessage {
     static Logger LOGGER = LoggerFactory.getLogger(DataMessage.class);
     private Integer sourcePort;
     private Long sequenceNumber;
-    private InetAddress inetAddress;
+    private InetAddress sourceAddress;
     private MessageType messageType;
     private Integer destinationPort;
 
     public DataMessage(DatagramPacket packet) {
-        this.inetAddress = packet.getAddress();
+        this.sourceAddress = packet.getAddress();
 //        this.destinationPort = DEFAULT_PORT;
         populateFrom(decode(packet));
     }
 
     public DataMessage(Long sequenceNumber, InetAddress address, MessageType messageType, Integer destinationPort, Integer sourcePort) {
         this.sequenceNumber = sequenceNumber;
-        this.inetAddress = address;
+        this.sourceAddress = address;
         this.messageType = messageType;
         this.destinationPort = destinationPort;
         this.sourcePort = sourcePort;
@@ -37,7 +37,7 @@ public class DataMessage {
                 .setListenPort(this.sourcePort)
                 .build();
         byte[] rawData = message.toByteArray();
-        return new DatagramPacket(rawData, rawData.length, this.inetAddress, this.destinationPort);
+        return new DatagramPacket(rawData, rawData.length, this.sourceAddress, this.destinationPort);
     }
 
     public Integer getSourcePort() {
@@ -48,8 +48,8 @@ public class DataMessage {
         return sequenceNumber;
     }
 
-    public InetAddress getInetAddress() {
-        return inetAddress;
+    public InetAddress getSourceAddress() {
+        return sourceAddress;
     }
 
     public MessageType getMessageType() {

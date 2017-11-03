@@ -27,7 +27,7 @@ public class PingHandler implements Handler {
     private DataMessage buildAckMsgFromPingReq(DataMessage receivedMessage) {
         return new DataMessage(
                 receivedMessage.getSequenceNumber(),
-                receivedMessage.getInetAddress(),
+                receivedMessage.getSourceAddress(),
                 MessageType.ACK,
                 receivedMessage.getSourcePort(),
                 config.getListenPort()
