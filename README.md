@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/priyaaank/Flippers.svg?branch=master)](https://travis-ci.org/priyaaank/Flippers)
+
 # Implementation on SWIM Protocol
 
 Whitepaper can be found [here](http://www.cs.cornell.edu/~asdas/research/dsn02-SWIM.pdf)
