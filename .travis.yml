@@ -5,4 +5,3 @@ dist: "trusty"
 os: "linux"
 jdk:
   - oraclejdk8
-  - openjdk8
