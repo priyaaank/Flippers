@@ -1,8 +1,7 @@
-package org.flippers.agent;
+package org.flippers.handlers;
 
-import org.flippers.commands.Command;
-import org.flippers.commands.NoOp;
-import org.flippers.commands.PingHandler;
+import org.flippers.agent.MessageSender;
+import org.flippers.messages.MessageType;
 import org.flippers.config.Config;
 
 import java.util.Map;
@@ -10,15 +9,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MessageTypeRegistry {
 
-    private Map<MessageType, Command> commandHandlerMapping;
+    private Map<MessageType, Handler> commandHandlerMapping;
 
     public MessageTypeRegistry(MessageSender sender, Config config) {
         this.commandHandlerMapping = new ConcurrentHashMap<>();
         this.commandHandlerMapping.put(MessageType.PING, new PingHandler(sender, config));
-        this.commandHandlerMapping.put(MessageType.ACK, new NoOp());
+        this.commandHandlerMapping.put(MessageType.ACK, new NoOpHandler());
     }
 
-    public Command handlerForType(MessageType type) {
+    public Handler handlerForType(MessageType type) {
         return commandHandlerMapping.get(type);
     }
 

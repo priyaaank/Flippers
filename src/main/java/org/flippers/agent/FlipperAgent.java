@@ -1,6 +1,9 @@
 package org.flippers.agent;
 
 import org.flippers.config.Config;
+import org.flippers.handlers.HandlerExecutor;
+import org.flippers.handlers.MessageHandlerExecutor;
+import org.flippers.handlers.MessageTypeRegistry;
 
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -11,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class FlipperAgent {
 
     private ExecutorService executorService;
-    private ReceivedMessageHandler receivedReceivedMessageHandler;
+    private HandlerExecutor handlerExecutor;
     private MessageListener listener;
     private MessageSender sender;
     private DatagramSocket socket;
@@ -23,8 +26,8 @@ public class FlipperAgent {
         this.executorService = Executors.newFixedThreadPool(1);
         this.sender = new MessageSender(this.socket, this.executorService);
         this.registry = new MessageTypeRegistry(this.sender, config);
-        this.receivedReceivedMessageHandler = new DefaultReceivedMessageHandler(executorService, registry);
-        this.listener = new MessageListener(this.socket, this.receivedReceivedMessageHandler);
+        this.handlerExecutor = new MessageHandlerExecutor(executorService, registry);
+        this.listener = new MessageListener(this.socket, this.handlerExecutor);
     }
 
     public FlipperAgent() throws SocketException {

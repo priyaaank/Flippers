@@ -1,4 +1,4 @@
-package org.flippers.membership;
+package org.flippers.peers;
 
 import java.net.InetAddress;
 

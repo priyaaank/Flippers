@@ -1,0 +1,37 @@
+To maintain events that need to be propogated, we need to manage a data structure that will be constantly ordered by how many times they
+have been piggybacked. Need to understand better how the number for right piggyback count is calculated.
+
+The key type of messages sent are
+PING
+PING-REQ
+ACK
+
+The type of data/events that are piggybacked are
+SUSPECTS
+ALIVE
+FAILURE
+NEW JOINEES
+
+The data for each of the piggyback message needed is
+- msg type | ip-address of the target | are there any unique identities for the nodes?
+
+
+Phase 1
+
+- Just develop a daemon that pings randomly selected nodes and expects an ACK
+- If an ACK is not received within a timeout then an event is generated for failure and kept in staging area for dissemination
+- If an ACK is received nothing is done until the next tick
+
+Phase 2
+
+- If an ACK is not received then we generate a PING-REQ for randomly selected nodes
+- If an ACK is received directly or indirectly nothing is done until next tick
+- If an ACK is not received, we generate an event and keep it in the staging area
+
+Phase 3
+
+- Allow new nodes to join in the cluster
+
+Phase 4
+
+- Piggyback failure and alive messages

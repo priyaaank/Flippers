@@ -1,8 +1,8 @@
-package org.flippers.commands;
+package org.flippers.handlers;
 
 import org.flippers.messages.DataMessage;
 
-public interface Command {
+public interface Handler {
 
     void handle(DataMessage dataMessage);
 

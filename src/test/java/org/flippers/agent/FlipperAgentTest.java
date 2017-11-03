@@ -1,7 +1,9 @@
 package org.flippers.agent;
 
 import org.flippers.config.Config;
+import org.flippers.handlers.HandlerExecutor;
 import org.flippers.messages.DataMessage;
+import org.flippers.messages.MessageType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,7 +67,7 @@ public class FlipperAgentTest {
         this.testingAgentSender.send(message);
     }
 
-    private class TestReceivedMessageHandler implements ReceivedMessageHandler {
+    private class TestReceivedMessageHandler implements HandlerExecutor {
 
         private CountDownLatch countDownLatch;
         public DataMessage message;
@@ -75,7 +77,7 @@ public class FlipperAgentTest {
         }
 
         @Override
-        public void handle(DataMessage packet) {
+        public void executeHandler(DataMessage packet) {
             this.message = packet;
             this.countDownLatch.countDown();
         }

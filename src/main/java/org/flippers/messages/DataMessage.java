@@ -1,7 +1,6 @@
 package org.flippers.messages;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import org.flippers.agent.MessageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

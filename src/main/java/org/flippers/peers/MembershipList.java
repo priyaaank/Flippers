@@ -1,4 +1,4 @@
-package org.flippers.membership;
+package org.flippers.peers;
 
 import java.util.ArrayList;
 import java.util.List;

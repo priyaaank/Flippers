@@ -2,6 +2,7 @@ package org.flippers.agent;
 
 import org.flippers.messages.DataMessage;
 import org.flippers.messages.MessageProtos;
+import org.flippers.messages.MessageType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

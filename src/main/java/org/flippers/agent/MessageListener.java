@@ -1,5 +1,6 @@
 package org.flippers.agent;
 
+import org.flippers.handlers.HandlerExecutor;
 import org.flippers.messages.DataMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +18,11 @@ public class MessageListener {
 
     private Boolean shutdownInitiated = Boolean.FALSE;
     private CountDownLatch countDownUntilBoundToPort = new CountDownLatch(1);
-    private ReceivedMessageHandler receivedMessageHandler;
+    private HandlerExecutor handlerExecutor;
     private DatagramSocket socket;
 
-    public MessageListener(DatagramSocket socket, ReceivedMessageHandler receivedMessageHandler) {
-        this.receivedMessageHandler = receivedMessageHandler;
+    public MessageListener(DatagramSocket socket, HandlerExecutor handlerExecutor) {
+        this.handlerExecutor = handlerExecutor;
         this.socket = socket;
     }
 
@@ -43,7 +44,7 @@ public class MessageListener {
                 DatagramPacket datagramPacket = new DatagramPacket(new byte[DEFAULT_ONE_KB_BUFFER], DEFAULT_ONE_KB_BUFFER);
                 socket.receive(datagramPacket);
                 DataMessage receivedMessage = new DataMessage(datagramPacket);
-                receivedMessageHandler.handle(receivedMessage);
+                handlerExecutor.executeHandler(receivedMessage);
             }
         } catch (IOException e) {
             LOGGER.error(e.getMessage());

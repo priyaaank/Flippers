@@ -1,11 +1,11 @@
-package org.flippers.commands;
+package org.flippers.handlers;
 
 import org.flippers.agent.MessageSender;
-import org.flippers.agent.MessageType;
+import org.flippers.messages.MessageType;
 import org.flippers.config.Config;
 import org.flippers.messages.DataMessage;
 
-public class PingHandler implements Command {
+public class PingHandler implements Handler {
 
     private MessageSender sender;
     private Config config;
@@ -17,13 +17,20 @@ public class PingHandler implements Command {
 
     @Override
     public void handle(DataMessage receivedMessage) {
-        DataMessage ackMessage = new DataMessage(
+        sendAckResponse(receivedMessage);
+    }
+
+    private void sendAckResponse(DataMessage receivedPingMsg) {
+        this.sender.send(buildAckMsgFromPingReq(receivedPingMsg));
+    }
+
+    private DataMessage buildAckMsgFromPingReq(DataMessage receivedMessage) {
+        return new DataMessage(
                 receivedMessage.getSequenceNumber(),
                 receivedMessage.getInetAddress(),
                 MessageType.ACK,
                 receivedMessage.getSourcePort(),
                 config.getListenPort()
         );
-        this.sender.send(ackMessage);
     }
 }
