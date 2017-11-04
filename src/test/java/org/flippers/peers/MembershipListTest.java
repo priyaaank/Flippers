@@ -34,6 +34,13 @@ public class MembershipListTest {
     }
 
     @Test
+    public void shouldReturnTheCountOfMembers() throws Exception {
+        registerNMemberNodes();
+
+        assertThat(membershipList.memberCount(), is(5));
+    }
+
+    @Test
     public void shouldReturnNullWhenNoNodesAreRegistered() throws Exception {
         List<PeerNode> peerNodes = this.membershipList.selectNodesRandomly(1);
 
@@ -48,4 +55,16 @@ public class MembershipListTest {
         assertThat(selectNodes.size(), is(3));
     }
 
+    @Test
+    public void shouldBeAbleToRemoveNodesFromMembership() throws Exception {
+        registerNMemberNodes();
+        this.membershipList.remove(buildTestNode(0));
+
+        assertThat(membershipList.memberCount(), is(4));
+    }
+
+    @Test
+    public void shouldMarkANodePingInitiated() throws Exception {
+        registerNMemberNodes();
+    }
 }

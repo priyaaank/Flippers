@@ -11,7 +11,7 @@ public class DataMessage {
 
     static Logger LOGGER = LoggerFactory.getLogger(DataMessage.class);
     private Integer sourcePort;
-    private Long sequenceNumber;
+    private String sequenceNumber;
     private InetAddress sourceAddress;
     private MessageType messageType;
     private Integer destinationPort;
@@ -22,7 +22,7 @@ public class DataMessage {
         populateFrom(decode(packet));
     }
 
-    public DataMessage(Long sequenceNumber, InetAddress address, MessageType messageType, Integer destinationPort, Integer sourcePort) {
+    public  DataMessage(String sequenceNumber, InetAddress address, MessageType messageType, Integer destinationPort, Integer sourcePort) {
         this.sequenceNumber = sequenceNumber;
         this.sourceAddress = address;
         this.messageType = messageType;
@@ -44,7 +44,7 @@ public class DataMessage {
         return sourcePort;
     }
 
-    public Long getSequenceNumber() {
+    public String getSequenceNumber() {
         return sequenceNumber;
     }
 

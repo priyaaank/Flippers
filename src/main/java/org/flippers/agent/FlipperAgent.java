@@ -36,6 +36,11 @@ public class FlipperAgent {
 
     public void start() {
         this.listener.beginAccepting();
+        this.beginTicks();
+    }
+
+    private void beginTicks() {
+        //Start a controller thread that will send pings and disseminate info
     }
 
     public void stop() throws InterruptedException {

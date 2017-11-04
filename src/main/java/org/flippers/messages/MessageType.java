@@ -4,5 +4,6 @@ public enum MessageType {
     PING,
     ACK,
     PING_REQ,
-    JOIN;
+    JOIN,
+    LEAVE;
 }

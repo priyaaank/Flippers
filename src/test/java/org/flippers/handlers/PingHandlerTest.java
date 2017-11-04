@@ -47,7 +47,7 @@ public class PingHandlerTest {
 
     @Test
     public void shouldResponseWithAnAckMessage() throws Exception {
-        long sequenceNumber = 123L;
+        String sequenceNumber = "1234";
         DataMessage message = new DataMessage(sequenceNumber, mockAddress, MessageType.PING, DESTINATION_PORT, SOURCE_PORT);
         this.pingHandler.handle(message);
 

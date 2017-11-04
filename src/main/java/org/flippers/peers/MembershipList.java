@@ -29,4 +29,16 @@ public class MembershipList {
     public void add(PeerNode peerNode) {
         this.registeredMembers.add(peerNode);
     }
+
+    public List<PeerNode> getNodesAwaitingAck() {
+        return null;
+    }
+
+    public void remove(PeerNode peerNode) {
+        this.registeredMembers.remove(peerNode);
+    }
+
+    public Integer memberCount() {
+        return this.registeredMembers.size();
+    }
 }

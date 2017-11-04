@@ -28,9 +28,14 @@ public final class MessageProtos {
     org.flippers.messages.MessageProtos.Message.MessageType getType();
 
     /**
-     * <code>int64 sequenceNumber = 2;</code>
+     * <code>string sequenceNumber = 2;</code>
      */
-    long getSequenceNumber();
+    java.lang.String getSequenceNumber();
+    /**
+     * <code>string sequenceNumber = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getSequenceNumberBytes();
 
     /**
      * <code>int32 listenPort = 3;</code>
@@ -51,7 +56,7 @@ public final class MessageProtos {
     }
     private Message() {
       type_ = 0;
-      sequenceNumber_ = 0L;
+      sequenceNumber_ = "";
       listenPort_ = 0;
     }
 
@@ -89,9 +94,10 @@ public final class MessageProtos {
               type_ = rawValue;
               break;
             }
-            case 16: {
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              sequenceNumber_ = input.readInt64();
+              sequenceNumber_ = s;
               break;
             }
             case 24: {
@@ -247,12 +253,37 @@ public final class MessageProtos {
     }
 
     public static final int SEQUENCENUMBER_FIELD_NUMBER = 2;
-    private long sequenceNumber_;
+    private volatile java.lang.Object sequenceNumber_;
     /**
-     * <code>int64 sequenceNumber = 2;</code>
+     * <code>string sequenceNumber = 2;</code>
      */
-    public long getSequenceNumber() {
-      return sequenceNumber_;
+    public java.lang.String getSequenceNumber() {
+      java.lang.Object ref = sequenceNumber_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        sequenceNumber_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string sequenceNumber = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSequenceNumberBytes() {
+      java.lang.Object ref = sequenceNumber_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sequenceNumber_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int LISTENPORT_FIELD_NUMBER = 3;
@@ -279,8 +310,8 @@ public final class MessageProtos {
       if (type_ != org.flippers.messages.MessageProtos.Message.MessageType.PING.getNumber()) {
         output.writeEnum(1, type_);
       }
-      if (sequenceNumber_ != 0L) {
-        output.writeInt64(2, sequenceNumber_);
+      if (!getSequenceNumberBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sequenceNumber_);
       }
       if (listenPort_ != 0) {
         output.writeInt32(3, listenPort_);
@@ -297,9 +328,8 @@ public final class MessageProtos {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, type_);
       }
-      if (sequenceNumber_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, sequenceNumber_);
+      if (!getSequenceNumberBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sequenceNumber_);
       }
       if (listenPort_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -322,8 +352,8 @@ public final class MessageProtos {
 
       boolean result = true;
       result = result && type_ == other.type_;
-      result = result && (getSequenceNumber()
-          == other.getSequenceNumber());
+      result = result && getSequenceNumber()
+          .equals(other.getSequenceNumber());
       result = result && (getListenPort()
           == other.getListenPort());
       result = result && unknownFields.equals(other.unknownFields);
@@ -340,8 +370,7 @@ public final class MessageProtos {
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
       hash = (37 * hash) + SEQUENCENUMBER_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getSequenceNumber());
+      hash = (53 * hash) + getSequenceNumber().hashCode();
       hash = (37 * hash) + LISTENPORT_FIELD_NUMBER;
       hash = (53 * hash) + getListenPort();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -475,7 +504,7 @@ public final class MessageProtos {
         super.clear();
         type_ = 0;
 
-        sequenceNumber_ = 0L;
+        sequenceNumber_ = "";
 
         listenPort_ = 0;
 
@@ -548,8 +577,9 @@ public final class MessageProtos {
         if (other.type_ != 0) {
           setTypeValue(other.getTypeValue());
         }
-        if (other.getSequenceNumber() != 0L) {
-          setSequenceNumber(other.getSequenceNumber());
+        if (!other.getSequenceNumber().isEmpty()) {
+          sequenceNumber_ = other.sequenceNumber_;
+          onChanged();
         }
         if (other.getListenPort() != 0) {
           setListenPort(other.getListenPort());
@@ -625,28 +655,71 @@ public final class MessageProtos {
         return this;
       }
 
-      private long sequenceNumber_ ;
+      private java.lang.Object sequenceNumber_ = "";
       /**
-       * <code>int64 sequenceNumber = 2;</code>
+       * <code>string sequenceNumber = 2;</code>
        */
-      public long getSequenceNumber() {
-        return sequenceNumber_;
+      public java.lang.String getSequenceNumber() {
+        java.lang.Object ref = sequenceNumber_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          sequenceNumber_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>int64 sequenceNumber = 2;</code>
+       * <code>string sequenceNumber = 2;</code>
        */
-      public Builder setSequenceNumber(long value) {
-        
+      public com.google.protobuf.ByteString
+          getSequenceNumberBytes() {
+        java.lang.Object ref = sequenceNumber_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sequenceNumber_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string sequenceNumber = 2;</code>
+       */
+      public Builder setSequenceNumber(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         sequenceNumber_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 sequenceNumber = 2;</code>
+       * <code>string sequenceNumber = 2;</code>
        */
       public Builder clearSequenceNumber() {
         
-        sequenceNumber_ = 0L;
+        sequenceNumber_ = getDefaultInstance().getSequenceNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string sequenceNumber = 2;</code>
+       */
+      public Builder setSequenceNumberBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        sequenceNumber_ = value;
         onChanged();
         return this;
       }
@@ -741,7 +814,7 @@ public final class MessageProtos {
     java.lang.String[] descriptorData = {
       "\n\rmessage.proto\022\010messages\"\223\001\n\007Message\022+\n" +
       "\004type\030\001 \001(\0162\035.messages.Message.MessageTy" +
-      "pe\022\026\n\016sequenceNumber\030\002 \001(\003\022\022\n\nlistenPort" +
+      "pe\022\026\n\016sequenceNumber\030\002 \001(\t\022\022\n\nlistenPort" +
       "\030\003 \001(\005\"/\n\013MessageType\022\010\n\004PING\020\000\022\007\n\003ACK\020\001" +
       "\022\r\n\tPING_NODE\020\002B&\n\025org.flippers.messages" +
       "B\rMessageProtosb\006proto3"

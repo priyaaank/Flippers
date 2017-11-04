@@ -57,13 +57,13 @@ public class FlipperAgentTest {
 
         DataMessage receivedMessage = this.receivedReceivedMessageHandler.message;
         assertThat(receivedMessage.getMessageType(), is(MessageType.ACK));
-        assertThat(receivedMessage.getSequenceNumber(), is(1L));
+        assertThat(receivedMessage.getSequenceNumber(), is("123"));
         assertThat(receivedMessage.getSourceAddress().getHostAddress(), is(localIpAddress.getHostAddress()));
         assertThat(receivedMessage.getSourcePort(), is(this.portForAgentUnderTest));
     }
 
     private void sendPingMessage() throws IOException {
-        DataMessage message = new DataMessage(1L, localIpAddress, MessageType.PING, this.portForAgentUnderTest, this.portForTestingAgent);
+        DataMessage message = new DataMessage("123", localIpAddress, MessageType.PING, this.portForAgentUnderTest, this.portForTestingAgent);
         this.testingAgentSender.send(message);
     }
 

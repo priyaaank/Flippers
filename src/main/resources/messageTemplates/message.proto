@@ -8,7 +8,7 @@ option java_outer_classname = "MessageProtos";
 message Message {
 
     MessageType type = 1;
-    int64 sequenceNumber = 2;
+    string sequenceNumber = 2;
     int32 listenPort = 3;
 
     enum MessageType {

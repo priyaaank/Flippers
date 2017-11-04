@@ -1,18 +1,18 @@
 package org.flippers.handlers;
 
 import org.flippers.agent.MessageSender;
-import org.flippers.messages.MessageType;
 import org.flippers.config.Config;
 import org.flippers.messages.DataMessage;
+import org.flippers.messages.MessageCreator;
 
 public class PingHandler implements Handler {
 
     private MessageSender sender;
-    private Config config;
+    private MessageCreator messageCreator;
 
     public PingHandler(MessageSender sender, Config config) {
         this.sender = sender;
-        this.config = config;
+        this.messageCreator = new MessageCreator(config);
     }
 
     @Override
@@ -21,16 +21,7 @@ public class PingHandler implements Handler {
     }
 
     private void sendAckResponse(DataMessage receivedPingMsg) {
-        this.sender.send(buildAckMsgFromPingReq(receivedPingMsg));
+        this.sender.send(messageCreator.ackResponseForReceivedMsg(receivedPingMsg));
     }
 
-    private DataMessage buildAckMsgFromPingReq(DataMessage receivedMessage) {
-        return new DataMessage(
-                receivedMessage.getSequenceNumber(),
-                receivedMessage.getSourceAddress(),
-                MessageType.ACK,
-                receivedMessage.getSourcePort(),
-                config.getListenPort()
-        );
-    }
 }
