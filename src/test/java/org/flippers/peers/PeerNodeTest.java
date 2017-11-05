@@ -8,10 +8,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.net.InetAddress;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PeerNodeTest {
@@ -19,33 +19,101 @@ public class PeerNodeTest {
     private PeerNode peerNode;
 
     @Mock
-    SubscriberAction subscriberAction;
+    InetAddress inetAddress;
 
     @Before
     public void setUp() throws Exception {
-        this.peerNode = new PeerNode(InetAddress.getLocalHost(), 8180);
+        this.peerNode = new PeerNode(inetAddress, 8180);
     }
 
     @Test
-    public void shouldPublishStateChangeToObserverOnceRegistered() throws Exception {
-        peerNode.registerObserver(updatedNode -> subscriberAction.execute());
-        peerNode.pingInitiated();
+    public void shouldNotifyObserversOnJoining() throws Exception {
+        MockNodeObserver observer = new MockNodeObserver();
+        this.peerNode.registerObserver(observer);
+        this.peerNode.initJoining();
 
-        verify(subscriberAction, times(1)).execute();
+        assertThat(observer.getState(), is("ALIVE"));
     }
 
     @Test
-    public void shouldNotPublishStateChangeToObserverOnceDeregistered() throws Exception {
-        NodeStateObserver nodeStateObserver = updatedNode -> subscriberAction.execute();
-        peerNode.registerObserver(nodeStateObserver);
-        peerNode.deregisterObserver(nodeStateObserver);
-        peerNode.pingInitiated();
+    public void shouldNotifyObserverWhenPingHasBeenInitiated() throws Exception {
+        MockNodeObserver observer = new MockNodeObserver();
+        this.peerNode.registerObserver(observer);
+        this.peerNode.pingInitiated();
 
-        verify(subscriberAction, never()).execute();
+        assertThat(observer.getState(), is("PING_AWAITED"));
     }
 
-    interface SubscriberAction {
-        void execute();
+    @Test
+    public void shouldNotifyObserverWhenHasBeenMarkedAlive() throws Exception {
+        MockNodeObserver observer = new MockNodeObserver();
+        this.peerNode.registerObserver(observer);
+        this.peerNode.markAlive();
+
+        assertThat(observer.getState(), is("ALIVE"));
+    }
+
+    @Test
+    public void shouldNotReceiveNotificationsWhenObserverIsNotRegistered() throws Exception {
+        MockNodeObserver observer = new MockNodeObserver();
+        this.peerNode.markAlive();
+
+        assertThat(observer.getState(), is(nullValue()));
+    }
+
+    @Test
+    public void shouldReturnPort() throws Exception {
+        assertThat(peerNode.getPort(), is(8180));
+    }
+
+    @Test
+    public void shouldReturnIpAddress() throws Exception {
+        assertThat(peerNode.getIpAddress(), is(inetAddress));
+    }
+
+    @Test
+    public void shouldMarkTwoNodesAsEqualsIfInetAddressAndPortsAreSame() throws Exception {
+        PeerNode nodeToCompare = new PeerNode(inetAddress, 8180);
+        assertEquals(peerNode, nodeToCompare);
+    }
+
+    class MockNodeObserver implements NodeStateObserver {
+
+        private String state;
+
+        public String getState() {
+            return this.state;
+        }
+
+        @Override
+        public void markPingAwaited(PeerNode peerNode) {
+            this.state = "PING_AWAITED";
+        }
+
+        @Override
+        public void markIndirectPingAwaited(PeerNode peerNode) {
+            this.state = "INDIRECT_PING_AWAITED";
+        }
+
+        @Override
+        public void markAlive(PeerNode peerNode) {
+            this.state = "ALIVE";
+        }
+
+        @Override
+        public void markDead(PeerNode peerNode) {
+            this.state = "DEAD";
+        }
+
+        @Override
+        public void markExited(PeerNode peerNode) {
+            this.state = "EXITED";
+        }
+
+        @Override
+        public void markFailureSuspected(PeerNode peerNode) {
+            this.state = "FAILURE_SUSPECTED";
+        }
     }
 
 }

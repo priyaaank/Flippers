@@ -25,7 +25,7 @@ public class MessageSender {
                 if(socket.isClosed()) throw new RuntimeException("Socket has been closed.");
                 socket.send(message.toDatagramPacket());
             } catch (IOException e) {
-                LOGGER.error(String.format("Failed sending of message: %s", new String(message.toDatagramPacket().getData())));
+                LOGGER.error(String.format("Dead sending of message: %s", new String(message.toDatagramPacket().getData())));
                 LOGGER.error(e.getMessage());
             }
         });

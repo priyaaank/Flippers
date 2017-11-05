@@ -1,5 +1,8 @@
 package org.flippers.peers;
 
+import org.flippers.peers.states.NodeState;
+import org.flippers.peers.states.NodeStateFactory;
+
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +17,6 @@ public class PeerNode {
     public PeerNode(InetAddress ipAddress, Integer port) {
         this.ipAddress = ipAddress;
         this.port = port;
-        this.state = NodeState.RUNNING;
         this.observers = new ArrayList<>();
     }
 
@@ -37,17 +39,18 @@ public class PeerNode {
     }
 
     public void pingInitiated() {
-        this.state = NodeState.PING_INITIATED;
-        this.observers.forEach(o -> o.stateUpdated(this));
+        this.state = NodeStateFactory.getInstance().awaitingAckState();
+        this.state.publishStateTransition(this, observers);
     }
 
-    enum NodeState {
-        RUNNING,
-        PING_INITIATED,
-        INDIRECT_PING_INITIATED,
-        FAILURE_SUSPECTED,
-        FAILED,
-        EXITED
+    public void initJoining() {
+        this.state = NodeStateFactory.getInstance().joinedState();
+        this.state.publishStateTransition(this, observers);
+    }
+
+    public void markAlive() {
+        this.state = NodeStateFactory.getInstance().aliveState();
+        this.state.publishStateTransition(this, observers);
     }
 
     @Override
@@ -67,4 +70,5 @@ public class PeerNode {
         result = 31 * result + port.hashCode();
         return result;
     }
+
 }

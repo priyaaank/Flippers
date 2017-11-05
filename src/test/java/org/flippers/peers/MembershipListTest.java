@@ -54,17 +54,15 @@ public class MembershipListTest {
 
         assertThat(selectNodes.size(), is(3));
     }
-
-    @Test
-    public void shouldBeAbleToRemoveNodesFromMembership() throws Exception {
-        registerNMemberNodes();
-        this.membershipList.remove(buildTestNode(0));
-
-        assertThat(membershipList.memberCount(), is(4));
-    }
-
+    
     @Test
     public void shouldMarkANodePingInitiated() throws Exception {
         registerNMemberNodes();
+        PeerNode peerNode = this.membershipList.selectNodesRandomly(1).get(0);
+        peerNode.pingInitiated();
+        List<PeerNode> nodesAwaitingAck = this.membershipList.getNodesAwaitingAck();
+
+        assertThat(nodesAwaitingAck.size(), is(1));
+        assertThat(nodesAwaitingAck.get(0), is(peerNode));
     }
 }
