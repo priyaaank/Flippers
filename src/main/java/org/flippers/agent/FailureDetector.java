@@ -15,8 +15,11 @@ public class FailureDetector implements Runnable {
     private MessageSender sender;
     private MessageCreator messageCreator;
 
-    public FailureDetector() {
-
+    public FailureDetector(ScheduledExecutorService executorService, MembershipList membershipList, MessageSender sender, MessageCreator messageCreator) {
+        this.executorService = executorService;
+        this.membershipList = membershipList;
+        this.sender = sender;
+        this.messageCreator = messageCreator;
     }
 
     public void startDetection() {
