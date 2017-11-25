@@ -1,34 +1,29 @@
 package org.flippers.config;
 
-public class Config {
+public interface Config {
 
-    private static final Integer DEFAULT_PORT = 8343;
-    private Integer listenPort;
+    interface KeyNames {
 
-    private Config() {
+        String LISTEN_PORT = "flipper.listening.port";
+        String ACK_TIMEOUT_MILLISECONDS = "flipper.direct.ack.timeout.milliseconds";
+        String INDIRECT_ACK_TIMEOUT_MILLISECONDS = "flipper.indirect.ack.timeout.milliseconds";
+        String FAILURE_HOLD_OFF_MILLISECONDS = "flipper.failure.suspect.threshold.milliseconds";
+
+    }
+
+    interface DefaultValues {
+
+        Integer DEFAULT_LISTEN_PORT = 8383;
+        Integer DEFAULT_ACK_TIMEOUT_MILLISECONDS = 5000;
+        Integer DEFAULT_INDIRECT_ACK_TIMEOUT_MILLISECONDS = 5000;
+        Integer DEFAULT_FAILURE_HOLD_OFF_MILLISECONDS = 5000;
 
     }
 
-    public Integer getListenPort() {
-        return listenPort;
-    }
+    String getValue(String keyName, String defaultValue);
 
-    public static class ConfigBuilder {
+    Integer getValue(String keyName, Integer defaultValue);
 
-        private Config config = new Config();
+    Double getValue(String keyName, Double defaultValue);
 
-        public ConfigBuilder() {
-            this.config.listenPort = DEFAULT_PORT;
-        }
-
-        public ConfigBuilder listenPort(Integer listenPort) {
-            this.config.listenPort = listenPort;
-            return this;
-        }
-
-        public Config build() {
-            return config;
-        }
-
-    }
 }

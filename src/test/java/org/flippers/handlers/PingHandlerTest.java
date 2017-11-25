@@ -1,7 +1,7 @@
 package org.flippers.handlers;
 
 import org.flippers.agent.MessageSender;
-import org.flippers.config.Config;
+import org.flippers.config.FileConfig;
 import org.flippers.messages.DataMessage;
 import org.flippers.messages.MessageType;
 import org.junit.Before;
@@ -14,6 +14,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.net.InetAddress;
 
+import static org.flippers.config.Config.DefaultValues.DEFAULT_LISTEN_PORT;
+import static org.flippers.config.Config.KeyNames.LISTEN_PORT;
 import static org.flippers.messages.MessageType.ACK;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -31,7 +33,7 @@ public class PingHandlerTest {
     MessageSender sender;
 
     @Mock
-    Config config;
+    FileConfig config;
 
     @Mock
     InetAddress mockAddress;
@@ -42,7 +44,7 @@ public class PingHandlerTest {
     @Before
     public void setUp() throws Exception {
         this.pingHandler = new PingHandler(sender, config);
-        when(config.getListenPort()).thenReturn(DESTINATION_PORT);
+        when(config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)).thenReturn(DESTINATION_PORT);
     }
 
     @Test

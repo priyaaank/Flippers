@@ -30,6 +30,8 @@ public class FailureDetector implements Runnable {
     public void run() {
         initiatePing();
         initiateIndirectPing();
+        markNodesSuspected();
+        markNodesFailed();
     }
 
     private void initiateIndirectPing() {
@@ -42,13 +44,25 @@ public class FailureDetector implements Runnable {
         peerNodes.forEach(this::sendPing);
     }
 
+    private void markNodesSuspected() {
+        List<PeerNode> peerNodes = this.membershipList.getNodesAwaitingIndirectAck();
+        peerNodes.forEach(PeerNode::markSuspect);
+    }
+
+    private void markNodesFailed() {
+        List<PeerNode> peerNodes = this.membershipList.getNodesMarkedAsSuspect();
+        peerNodes.forEach(PeerNode::markDead);
+    }
+
     private void sendIndirectPing(PeerNode peerNode) {
         this.sender.send(messageCreator.craftIndirectPingMsg(peerNode));
+        peerNode.indirectPingInitiated();
     }
 
     private void sendPing(final PeerNode peerNode) {
         this.sender.send(messageCreator.craftPingMsg(peerNode));
         peerNode.pingInitiated();
     }
+
 }
 

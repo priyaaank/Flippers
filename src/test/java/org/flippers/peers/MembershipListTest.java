@@ -1,5 +1,7 @@
 package org.flippers.peers;
 
+import org.flippers.config.Config;
+import org.flippers.config.FileConfig;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,21 +9,26 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class MembershipListTest {
 
+    public static final int SLEEP_MILLIS = 11;
     private MembershipList membershipList;
+
+    private Config config;
 
     @Before
     public void setUp() throws Exception {
-        this.membershipList = new MembershipList();
+        this.config = new FileConfig();
+        this.membershipList = new MembershipList(config);
     }
 
     private void registerNMemberNodes() throws UnknownHostException {
-        this.membershipList = new MembershipList();
+        this.membershipList = new MembershipList(config);
         this.membershipList.add(buildTestNode(0));
         this.membershipList.add(buildTestNode(1));
         this.membershipList.add(buildTestNode(2));
@@ -54,12 +61,13 @@ public class MembershipListTest {
 
         assertThat(selectNodes.size(), is(3));
     }
-    
+
     @Test
     public void shouldMarkANodePingInitiated() throws Exception {
         registerNMemberNodes();
         PeerNode peerNode = this.membershipList.selectNodesRandomly(1).get(0);
         peerNode.pingInitiated();
+        sleep(SLEEP_MILLIS);
         List<PeerNode> nodesAwaitingAck = this.membershipList.getNodesAwaitingAck();
 
         assertThat(nodesAwaitingAck.size(), is(1));

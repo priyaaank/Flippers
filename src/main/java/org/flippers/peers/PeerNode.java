@@ -13,6 +13,7 @@ public class PeerNode {
     private Integer port;
     private NodeState state;
     private List<NodeStateObserver> observers;
+    private NodeInteraction interaction;
 
     public PeerNode(InetAddress ipAddress, Integer port) {
         this.ipAddress = ipAddress;
@@ -39,7 +40,14 @@ public class PeerNode {
     }
 
     public void pingInitiated() {
+        this.setInteractionInitiated();
         this.state = NodeStateFactory.getInstance().awaitingAckState();
+        this.state.publishStateTransition(this, observers);
+    }
+
+    public void indirectPingInitiated() {
+        this.setInteractionInitiated();
+        this.state = NodeStateFactory.getInstance().awaitingIndirectAckState();
         this.state.publishStateTransition(this, observers);
     }
 
@@ -51,6 +59,25 @@ public class PeerNode {
     public void markAlive() {
         this.state = NodeStateFactory.getInstance().aliveState();
         this.state.publishStateTransition(this, observers);
+    }
+
+    public void markSuspect() {
+        this.setInteractionInitiated();
+        this.state = NodeStateFactory.getInstance().failureSuspectedState();
+        this.state.publishStateTransition(this, observers);
+    }
+
+    public void markDead() {
+        this.state = NodeStateFactory.getInstance().deadState();
+        this.state.publishStateTransition(this, observers);
+    }
+
+    public boolean isInteractionInitiatedWithinMilliSeconds(long secondsAgo) {
+        return this.interaction.isInteractionInitiatedWithinMilliSeconds(secondsAgo);
+    }
+
+    public void setInteractionInitiated() {
+        this.interaction = new NodeInteraction();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package org.flippers.agent;
 
-import org.flippers.config.Config;
+import org.flippers.config.FileConfig;
 import org.flippers.handlers.HandlerExecutor;
 import org.flippers.messages.DataMessage;
 import org.flippers.messages.MessageType;
@@ -23,7 +23,7 @@ public class FlipperAgentTest {
 
     private Integer portForAgentUnderTest = 8000;
     private Integer portForTestingAgent = 9000;
-    private Config configForAgentUnderTest = new Config.ConfigBuilder().listenPort(portForAgentUnderTest).build();
+    private FileConfig configForAgentUnderTest = new FileConfig();
     private FlipperAgent peerAgentUnderTest;
     private InetAddress localIpAddress;
     private DatagramSocket socket;

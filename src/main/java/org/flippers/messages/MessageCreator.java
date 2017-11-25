@@ -1,14 +1,17 @@
 package org.flippers.messages;
 
-import org.flippers.config.Config;
+import org.flippers.config.FileConfig;
 import org.flippers.peers.PeerNode;
+
+import static org.flippers.config.Config.DefaultValues.DEFAULT_LISTEN_PORT;
+import static org.flippers.config.Config.KeyNames.LISTEN_PORT;
 
 public class MessageCreator {
 
     private final SequenceNumberGenerator sequenceNumberGenerator;
-    private Config config;
+    private FileConfig config;
 
-    public MessageCreator(Config config) {
+    public MessageCreator(FileConfig config) {
         this.config = config;
         this.sequenceNumberGenerator = new SequenceNumberGenerator();
     }
@@ -19,7 +22,7 @@ public class MessageCreator {
                 receivedMessage.getSourceAddress(),
                 MessageType.ACK,
                 receivedMessage.getSourcePort(),
-                config.getListenPort()
+                config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
         );
     }
 
@@ -29,7 +32,7 @@ public class MessageCreator {
                 node.getIpAddress(),
                 MessageType.PING,
                 node.getPort(),
-                config.getListenPort()
+                config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
         );
     }
 
@@ -39,7 +42,7 @@ public class MessageCreator {
                 node.getIpAddress(),
                 MessageType.PING_REQ,
                 node.getPort(),
-                config.getListenPort()
+                config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
         );
     }
 }
