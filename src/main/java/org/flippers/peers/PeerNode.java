@@ -6,6 +6,7 @@ import org.flippers.peers.states.NodeStateFactory;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PeerNode {
 
@@ -18,7 +19,7 @@ public class PeerNode {
     public PeerNode(InetAddress ipAddress, Integer port) {
         this.ipAddress = ipAddress;
         this.port = port;
-        this.observers = new ArrayList<>();
+        this.observers = new CopyOnWriteArrayList<>();
     }
 
     public void registerObserver(NodeStateObserver observer) {
@@ -69,6 +70,11 @@ public class PeerNode {
 
     public void markDead() {
         this.state = NodeStateFactory.getInstance().deadState();
+        this.state.publishStateTransition(this, observers);
+    }
+
+    public void markExited() {
+        this.state = NodeStateFactory.getInstance().exitedState();
         this.state.publishStateTransition(this, observers);
     }
 

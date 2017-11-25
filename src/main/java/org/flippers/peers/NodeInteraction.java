@@ -22,7 +22,7 @@ public class NodeInteraction {
 
     public Boolean isInteractionInitiatedWithinMilliSeconds(Long milliSecondsAgo) {
         Long milliSecondsBetween = ChronoUnit.MILLIS.between(this.interactionInitiationAt, ZonedDateTime.now());
-        LOGGER.debug("Milliseconds between interaction initiation and time right now is {}", milliSecondsAgo);
+        LOGGER.debug("Milliseconds between interaction initiation and time right now is {}", milliSecondsBetween);
         return milliSecondsBetween <= milliSecondsAgo;
     }
 }
