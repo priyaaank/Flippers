@@ -16,7 +16,8 @@ import static org.junit.Assert.assertThat;
 
 public class MembershipListTest {
 
-    public static final int SLEEP_MILLIS = 11;
+    public static final int LESS_THAN_WAIT_THRESHOLD_MILLIS = 1;
+    public static final int PAST_WAIT_THRESHOLD_MILLIS = 11;
     private MembershipList membershipList;
 
     private Config config;
@@ -63,14 +64,27 @@ public class MembershipListTest {
     }
 
     @Test
-    public void shouldMarkANodePingInitiated() throws Exception {
+    public void shouldNotReturnNodeAwaitingForAckIfWaitThresholdIsNotPast() throws Exception {
         registerNMemberNodes();
         PeerNode peerNode = this.membershipList.selectNodesRandomly(1).get(0);
         peerNode.pingInitiated();
-        sleep(SLEEP_MILLIS);
+
+        sleep(LESS_THAN_WAIT_THRESHOLD_MILLIS);
+        List<PeerNode> nodesAwaitingAck = this.membershipList.getNodesAwaitingAck();
+
+        assertThat(nodesAwaitingAck.size(), is(0));
+    }
+
+    @Test
+    public void shouldReturnNodeAwaitingForAckIfWaitThresholdIsPast() throws Exception {
+        registerNMemberNodes();
+        PeerNode peerNode = this.membershipList.selectNodesRandomly(1).get(0);
+        peerNode.pingInitiated();
+        sleep(PAST_WAIT_THRESHOLD_MILLIS);
         List<PeerNode> nodesAwaitingAck = this.membershipList.getNodesAwaitingAck();
 
         assertThat(nodesAwaitingAck.size(), is(1));
         assertThat(nodesAwaitingAck.get(0), is(peerNode));
     }
+
 }
