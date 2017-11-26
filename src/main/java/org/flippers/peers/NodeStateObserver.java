@@ -2,6 +2,8 @@ package org.flippers.peers;
 
 public interface NodeStateObserver {
 
+    void markJoined(PeerNode peerNode);
+
     void markPingAwaited(PeerNode peerNode);
 
     void markIndirectPingAwaited(PeerNode peerNode);

@@ -1,5 +1,8 @@
 package org.flippers.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -8,6 +11,7 @@ public class FileConfig implements Config {
 
     private static String DEFAULT_PROPERTIES_FILE = "flipper.config.default.properties";
     private final Properties properties;
+    private final static Logger LOGGER = LoggerFactory.getLogger(FileConfig.class);
 
     public FileConfig() {
         this(DEFAULT_PROPERTIES_FILE);
@@ -39,8 +43,9 @@ public class FileConfig implements Config {
         try (InputStream input = FileConfig.class.getClassLoader().getResourceAsStream(fileName)) {
             if (input == null) return;
             properties.load(input);
+            LOGGER.debug("Loaded all properties successfully. Count of properties loaded {}", properties.size());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error(ex.getMessage());
         }
     }
 

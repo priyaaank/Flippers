@@ -86,6 +86,11 @@ public class PeerNodeTest {
         }
 
         @Override
+        public void markJoined(PeerNode peerNode) {
+            this.state = "JOINED";
+        }
+
+        @Override
         public void markPingAwaited(PeerNode peerNode) {
             this.state = "PING_AWAITED";
         }

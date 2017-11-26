@@ -68,6 +68,11 @@ public class MembershipList implements NodeStateObserver {
     }
 
     @Override
+    public void markJoined(PeerNode peerNode) {
+        //Do nothing
+    }
+
+    @Override
     public void markPingAwaited(PeerNode peerNode) {
         if (!this.ackAwaitedNodes.contains(peerNode))
             this.ackAwaitedNodes.add(peerNode);
