@@ -14,7 +14,7 @@ public class MessageTypeRegistry {
     public MessageTypeRegistry(MessageSender sender, FileConfig config) {
         this.commandHandlerMapping = new ConcurrentHashMap<>();
         this.commandHandlerMapping.put(MessageType.PING, new PingHandler(sender, config));
-        this.commandHandlerMapping.put(MessageType.ACK, new NoOpHandler());
+        this.commandHandlerMapping.put(MessageType.ACK, new AckHandler());
     }
 
     public Handler handlerForType(MessageType type) {

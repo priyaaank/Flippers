@@ -1,5 +1,6 @@
 package org.flippers.agent;
 
+import org.flippers.config.Config;
 import org.flippers.messages.MessageCreator;
 import org.flippers.peers.MembershipList;
 import org.flippers.peers.PeerNode;
@@ -8,22 +9,33 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static org.flippers.config.Config.DefaultValues.DEFAULT_FAILURE_DETECTION_DELAY_PERIOD;
+import static org.flippers.config.Config.DefaultValues.DEFAULT_FAILURE_DETECTION_INITIAL_DELAY;
+import static org.flippers.config.Config.DefaultValues.DEFAULT_RANDOM_NODE_SELECTION_COUNT;
+import static org.flippers.config.Config.KeyNames.FAILURE_DETECTION_DELAY_PERIOD;
+import static org.flippers.config.Config.KeyNames.FAILURE_DETECTION_INITIAL_DELAY;
+import static org.flippers.config.Config.KeyNames.RANDOM_NODE_SELECTION_COUNT;
+
 public class FailureDetector implements Runnable {
 
     private ScheduledExecutorService executorService;
     private MembershipList membershipList;
     private MessageSender sender;
     private MessageCreator messageCreator;
+    private Config config;
 
-    public FailureDetector(ScheduledExecutorService executorService, MembershipList membershipList, MessageSender sender, MessageCreator messageCreator) {
+    public FailureDetector(ScheduledExecutorService executorService, MembershipList membershipList, MessageSender sender, MessageCreator messageCreator, Config config) {
         this.executorService = executorService;
         this.membershipList = membershipList;
         this.sender = sender;
         this.messageCreator = messageCreator;
+        this.config = config;
     }
 
     public void startDetection() {
-        executorService.scheduleAtFixedRate(FailureDetector.this, 1, 1, TimeUnit.SECONDS);
+        int initialDelay = config.getValue(FAILURE_DETECTION_INITIAL_DELAY, DEFAULT_FAILURE_DETECTION_INITIAL_DELAY);
+        int delayPeriod = config.getValue(FAILURE_DETECTION_DELAY_PERIOD, DEFAULT_FAILURE_DETECTION_DELAY_PERIOD);
+        executorService.scheduleAtFixedRate(this, initialDelay, delayPeriod, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -40,7 +52,8 @@ public class FailureDetector implements Runnable {
     }
 
     private void initiatePing() {
-        List<PeerNode> peerNodes = this.membershipList.selectNodesRandomly(5);
+        Integer selectionCount = config.getValue(RANDOM_NODE_SELECTION_COUNT, DEFAULT_RANDOM_NODE_SELECTION_COUNT);
+        List<PeerNode> peerNodes = this.membershipList.selectNodesRandomly(selectionCount);
         peerNodes.forEach(this::sendPing);
     }
 

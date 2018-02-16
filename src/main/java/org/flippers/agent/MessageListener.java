@@ -28,6 +28,7 @@ public class MessageListener {
     public void beginAccepting() {
         try {
             new Thread(this::bindAgentToSocket).start();
+            //fix this. We should countdown with a timeout
             countDownUntilBoundToPort.await();
         } catch (InterruptedException e) {
             shutdownInitiated = Boolean.TRUE;

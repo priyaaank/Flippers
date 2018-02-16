@@ -20,7 +20,6 @@ import static org.flippers.config.Config.KeyNames.THREAD_POOL_SIZE;
 
 public class FlipperAgent {
 
-    private static final int DEFAULT_POOL_SIZE = 1;
     private ExecutorService executorService;
     private HandlerExecutor handlerExecutor;
     private MessageListener listener;
@@ -40,7 +39,7 @@ public class FlipperAgent {
         this.handlerExecutor = new MessageHandlerExecutor(executorService, registry);
         this.listener = new MessageListener(this.socket, this.handlerExecutor);
         this.membershipList = new MembershipList(config);
-        this.failureDetector = new FailureDetector(Executors.newScheduledThreadPool(corePoolSize), this.membershipList, this.sender, new MessageCreator(config));
+        this.failureDetector = new FailureDetector(Executors.newScheduledThreadPool(corePoolSize), this.membershipList, this.sender, new MessageCreator(config), config);
     }
 
     public FlipperAgent() throws SocketException {
@@ -49,11 +48,7 @@ public class FlipperAgent {
 
     public void start() {
         this.listener.beginAccepting();
-        this.beginTicks();
-    }
-
-    private void beginTicks() {
-        //Start a controller thread that will send pings and disseminate info
+        this.failureDetector.startDetection();
     }
 
     public void stop() throws InterruptedException {

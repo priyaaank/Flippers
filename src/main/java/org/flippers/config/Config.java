@@ -9,6 +9,9 @@ public interface Config {
         String INDIRECT_ACK_TIMEOUT_MILLISECONDS = "flipper.indirect.ack.timeout.milliseconds";
         String FAILURE_HOLD_OFF_MILLISECONDS = "flipper.failure.suspect.threshold.milliseconds";
         String THREAD_POOL_SIZE = "flipper.thread.pool.count";
+        String FAILURE_DETECTION_INITIAL_DELAY = "flipper.failure.detection.initial.delay.millis";
+        String FAILURE_DETECTION_DELAY_PERIOD = "flipper.failure.detection.delay.period.millis";
+        String RANDOM_NODE_SELECTION_COUNT = "flipper.dissemination.random.node.selection.count";
 
     }
 
@@ -19,6 +22,9 @@ public interface Config {
         Integer DEFAULT_INDIRECT_ACK_TIMEOUT_MILLISECONDS = 5000;
         Integer DEFAULT_FAILURE_HOLD_OFF_MILLISECONDS = 5000;
         Integer DEFAULT_THREAD_POOL_COUNT = 2;
+        Integer DEFAULT_FAILURE_DETECTION_INITIAL_DELAY = 1000;
+        Integer DEFAULT_FAILURE_DETECTION_DELAY_PERIOD = 1000;
+        Integer DEFAULT_RANDOM_NODE_SELECTION_COUNT = 5;
 
     }
 
