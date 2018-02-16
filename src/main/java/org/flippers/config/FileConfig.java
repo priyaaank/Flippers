@@ -21,7 +21,7 @@ public class FileConfig implements Config {
         properties = new Properties();
         loadConfig(fileName);
     }
-    
+
     @Override
     public String getValue(String keyName, String defaultValue) {
         return this.properties.getProperty(keyName, defaultValue);

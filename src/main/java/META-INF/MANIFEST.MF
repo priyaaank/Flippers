@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: slf4j-api-1.7.25.jar logback-core-1.2.3.jar protobuf-java-
+ 3.4.0.jar logback-classic-1.2.3.jar
+

@@ -14,7 +14,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.flippers.config.Config.DefaultValues.DEFAULT_LISTEN_PORT;
+import static org.flippers.config.Config.DefaultValues.DEFAULT_THREAD_POOL_COUNT;
 import static org.flippers.config.Config.KeyNames.LISTEN_PORT;
+import static org.flippers.config.Config.KeyNames.THREAD_POOL_SIZE;
 
 public class FlipperAgent {
 
@@ -31,13 +33,14 @@ public class FlipperAgent {
 
     public FlipperAgent(FileConfig config) throws SocketException {
         this.socket = new DatagramSocket(config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT));
-        this.executorService = Executors.newFixedThreadPool(DEFAULT_POOL_SIZE);
+        Integer corePoolSize = config.getValue(THREAD_POOL_SIZE, DEFAULT_THREAD_POOL_COUNT);
+        this.executorService = Executors.newFixedThreadPool(corePoolSize);
         this.sender = new MessageSender(this.socket, this.executorService);
         this.registry = new MessageTypeRegistry(this.sender, config);
         this.handlerExecutor = new MessageHandlerExecutor(executorService, registry);
         this.listener = new MessageListener(this.socket, this.handlerExecutor);
         this.membershipList = new MembershipList(config);
-        this.failureDetector = new FailureDetector(Executors.newScheduledThreadPool(DEFAULT_POOL_SIZE), this.membershipList, this.sender, new MessageCreator(config));
+        this.failureDetector = new FailureDetector(Executors.newScheduledThreadPool(corePoolSize), this.membershipList, this.sender, new MessageCreator(config));
     }
 
     public FlipperAgent() throws SocketException {

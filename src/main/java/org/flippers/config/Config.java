@@ -8,6 +8,7 @@ public interface Config {
         String ACK_TIMEOUT_MILLISECONDS = "flipper.direct.ack.timeout.milliseconds";
         String INDIRECT_ACK_TIMEOUT_MILLISECONDS = "flipper.indirect.ack.timeout.milliseconds";
         String FAILURE_HOLD_OFF_MILLISECONDS = "flipper.failure.suspect.threshold.milliseconds";
+        String THREAD_POOL_SIZE = "flipper.thread.pool.count";
 
     }
 
@@ -17,6 +18,7 @@ public interface Config {
         Integer DEFAULT_ACK_TIMEOUT_MILLISECONDS = 5000;
         Integer DEFAULT_INDIRECT_ACK_TIMEOUT_MILLISECONDS = 5000;
         Integer DEFAULT_FAILURE_HOLD_OFF_MILLISECONDS = 5000;
+        Integer DEFAULT_THREAD_POOL_COUNT = 2;
 
     }
 

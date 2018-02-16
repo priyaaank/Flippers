@@ -13,7 +13,6 @@ import java.util.concurrent.CountDownLatch;
 public class MessageListener {
 
     private static final int DEFAULT_ONE_KB_BUFFER = 1024;
-    private static final Integer DEFAULT_PORT = 8343;
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageListener.class);
 
     private Boolean shutdownInitiated = Boolean.FALSE;
