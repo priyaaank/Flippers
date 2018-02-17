@@ -43,7 +43,7 @@ public class MessageListener {
                 countDownUntilBoundToPort.countDown();
                 DatagramPacket datagramPacket = new DatagramPacket(new byte[DEFAULT_ONE_KB_BUFFER], DEFAULT_ONE_KB_BUFFER);
                 socket.receive(datagramPacket);
-                DataMessage receivedMessage = new DataMessage(datagramPacket);
+                DataMessage receivedMessage = DataMessage.fromReceivedDatagram(datagramPacket);
                 handlerExecutor.executeHandler(receivedMessage);
             }
         } catch (IOException e) {

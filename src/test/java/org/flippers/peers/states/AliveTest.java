@@ -25,7 +25,7 @@ public class AliveTest {
     private Alive alive;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.alive = new Alive();
         this.observers = new ArrayList<NodeStateObserver>() {{
             add(observer);
@@ -33,9 +33,10 @@ public class AliveTest {
     }
 
     @Test
-    public void shouldIndicateNodeIsAlive() throws Exception {
-        this.alive.publishStateTransition(peerNode, observers);
+    public void shouldIndicateNodeIsAlive() {
+        Dead deadState = new Dead();
+        this.alive.publishStateTransition(peerNode, observers, deadState);
 
-        verify(observer).markAlive(peerNode);
+        verify(observer).markAlive(peerNode, deadState);
     }
 }

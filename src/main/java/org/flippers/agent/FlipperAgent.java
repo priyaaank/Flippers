@@ -33,12 +33,12 @@ public class FlipperAgent {
     public FlipperAgent(FileConfig config) throws SocketException {
         this.socket = new DatagramSocket(config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT));
         Integer corePoolSize = config.getValue(THREAD_POOL_SIZE, DEFAULT_THREAD_POOL_COUNT);
+        this.membershipList = new MembershipList(config);
         this.executorService = Executors.newFixedThreadPool(corePoolSize);
         this.sender = new MessageSender(this.socket, this.executorService);
-        this.registry = new MessageTypeRegistry(this.sender, config);
+        this.registry = new MessageTypeRegistry(this.sender, config, this.membershipList);
         this.handlerExecutor = new MessageHandlerExecutor(executorService, registry);
         this.listener = new MessageListener(this.socket, this.handlerExecutor);
-        this.membershipList = new MembershipList(config);
         this.failureDetector = new FailureDetector(Executors.newScheduledThreadPool(corePoolSize), this.membershipList, this.sender, new MessageCreator(config), config);
     }
 

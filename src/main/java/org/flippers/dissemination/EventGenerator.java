@@ -2,6 +2,10 @@ package org.flippers.dissemination;
 
 import org.flippers.peers.NodeStateObserver;
 import org.flippers.peers.PeerNode;
+import org.flippers.peers.states.AwaitingAck;
+import org.flippers.peers.states.AwaitingIndirectAck;
+import org.flippers.peers.states.Joined;
+import org.flippers.peers.states.NodeState;
 
 import static org.flippers.dissemination.EventType.*;
 
@@ -14,39 +18,40 @@ public class EventGenerator implements NodeStateObserver {
     }
 
     @Override
-    public void markPingAwaited(PeerNode peerNode) {
+    public void markPingAwaited(PeerNode peerNode, NodeState fromState) {
         //Do nothing
     }
 
     @Override
-    public void markIndirectPingAwaited(PeerNode peerNode) {
+    public void markIndirectPingAwaited(PeerNode peerNode, NodeState fromState) {
         //Do nothing
     }
 
     @Override
-    public void markAlive(PeerNode peerNode) {
-        //In case of alive, it is important to know the previous state, since only if state changes
-        //we need to disseminate the information about node being alived
+    public void markAlive(PeerNode peerNode, NodeState fromState) {
+        if(fromState instanceof AwaitingAck || fromState instanceof AwaitingIndirectAck || fromState instanceof Joined)
+            return;
+
         this.eventLog.enqueue(new Event(peerNode.getIpAddress().getHostAddress(), ALIVE));
     }
 
     @Override
-    public void markJoined(PeerNode peerNode) {
+    public void markJoined(PeerNode peerNode, NodeState fromState) {
         this.eventLog.enqueue(new Event(peerNode.getIpAddress().getHostAddress(), JOINED));
     }
 
     @Override
-    public void markDead(PeerNode peerNode) {
+    public void markDead(PeerNode peerNode, NodeState fromState) {
         this.eventLog.enqueue(new Event(peerNode.getIpAddress().getHostAddress(), DEAD));
     }
 
     @Override
-    public void markExited(PeerNode peerNode) {
+    public void markExited(PeerNode peerNode, NodeState fromState) {
         this.eventLog.enqueue(new Event(peerNode.getIpAddress().getHostAddress(), EXITED));
     }
 
     @Override
-    public void markFailureSuspected(PeerNode peerNode) {
+    public void markFailureSuspected(PeerNode peerNode, NodeState fromState) {
         this.eventLog.enqueue(new Event(peerNode.getIpAddress().getHostAddress(), SUSPECT));
     }
 

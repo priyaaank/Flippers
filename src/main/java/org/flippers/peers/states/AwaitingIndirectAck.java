@@ -8,8 +8,8 @@ import java.util.List;
 public class AwaitingIndirectAck implements NodeState {
 
     @Override
-    public void publishStateTransition(PeerNode node, List<NodeStateObserver> observers) {
-        observers.forEach(o -> o.markIndirectPingAwaited(node));
+    public void publishStateTransition(PeerNode node, List<NodeStateObserver> observers, NodeState fromState) {
+        observers.forEach(o -> o.markIndirectPingAwaited(node, fromState));
     }
 
 }

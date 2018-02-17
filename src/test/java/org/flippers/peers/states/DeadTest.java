@@ -6,12 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,7 +25,7 @@ public class DeadTest {
     private Dead dead;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.dead = new Dead();
         this.observers = new ArrayList<NodeStateObserver>() {{
             add(observer);
@@ -35,9 +33,10 @@ public class DeadTest {
     }
 
     @Test
-    public void shouldIndicateNodeIsDead() throws Exception {
-        this.dead.publishStateTransition(peerNode, observers);
+    public void shouldIndicateNodeIsDead() {
+        NodeState fromState = new FailureSuspected();
+        this.dead.publishStateTransition(peerNode, observers, fromState);
 
-        verify(observer).markDead(peerNode);
+        verify(observer).markDead(peerNode, fromState);
     }
 }

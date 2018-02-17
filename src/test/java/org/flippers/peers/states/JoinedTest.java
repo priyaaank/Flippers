@@ -25,7 +25,7 @@ public class JoinedTest {
     private Joined joined;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.joined = new Joined();
         this.observers = new ArrayList<NodeStateObserver>() {{
             add(observer);
@@ -33,8 +33,8 @@ public class JoinedTest {
     }
 
     @Test
-    public void shouldIndicateThatNodeHasJoined() throws Exception {
-        this.joined.publishStateTransition(peerNode, observers);
+    public void shouldIndicateThatNodeHasJoined() {
+        this.joined.publishStateTransition(peerNode, observers, null);
 
         verify(peerNode).markAlive();
     }

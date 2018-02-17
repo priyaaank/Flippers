@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Joined implements NodeState {
     @Override
-    public void publishStateTransition(PeerNode node, List<NodeStateObserver> observers) {
-        observers.forEach(o -> o.markJoined(node));
+    public void publishStateTransition(PeerNode node, List<NodeStateObserver> observers, NodeState fromState) {
+        observers.forEach(o -> o.markJoined(node, fromState));
         node.markAlive();
     }
 }

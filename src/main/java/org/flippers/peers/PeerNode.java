@@ -4,7 +4,6 @@ import org.flippers.peers.states.NodeState;
 import org.flippers.peers.states.NodeStateFactory;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -42,40 +41,33 @@ public class PeerNode {
 
     public void pingInitiated() {
         this.setInteractionInitiated();
-        this.state = NodeStateFactory.getInstance().awaitingAckState();
-        this.state.publishStateTransition(this, observers);
+        transitionState(this.state, NodeStateFactory.getInstance().awaitingAckState());
     }
 
     public void indirectPingInitiated() {
         this.setInteractionInitiated();
-        this.state = NodeStateFactory.getInstance().awaitingIndirectAckState();
-        this.state.publishStateTransition(this, observers);
+        transitionState(this.state, NodeStateFactory.getInstance().awaitingIndirectAckState());
     }
 
     public void initJoining() {
-        this.state = NodeStateFactory.getInstance().joinedState();
-        this.state.publishStateTransition(this, observers);
+        transitionState(this.state, NodeStateFactory.getInstance().joinedState());
     }
 
     public void markAlive() {
-        this.state = NodeStateFactory.getInstance().aliveState();
-        this.state.publishStateTransition(this, observers);
+        transitionState(this.state, NodeStateFactory.getInstance().aliveState());
     }
 
     public void markSuspect() {
         this.setInteractionInitiated();
-        this.state = NodeStateFactory.getInstance().failureSuspectedState();
-        this.state.publishStateTransition(this, observers);
+        transitionState(this.state, NodeStateFactory.getInstance().failureSuspectedState());
     }
 
     public void markDead() {
-        this.state = NodeStateFactory.getInstance().deadState();
-        this.state.publishStateTransition(this, observers);
+        transitionState(this.state, NodeStateFactory.getInstance().deadState());
     }
 
     public void markExited() {
-        this.state = NodeStateFactory.getInstance().exitedState();
-        this.state.publishStateTransition(this, observers);
+        transitionState(this.state, NodeStateFactory.getInstance().exitedState());
     }
 
     public boolean isInteractionInitiatedWithinMilliSeconds(long secondsAgo) {
@@ -102,6 +94,11 @@ public class PeerNode {
         int result = ipAddress.hashCode();
         result = 31 * result + port.hashCode();
         return result;
+    }
+
+    private void transitionState(NodeState prevState, NodeState toState) {
+        this.state = toState;
+        this.state.publishStateTransition(this, observers, prevState);
     }
 
 }

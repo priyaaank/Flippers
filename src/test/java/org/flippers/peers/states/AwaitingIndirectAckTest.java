@@ -25,7 +25,7 @@ public class AwaitingIndirectAckTest {
     private AwaitingIndirectAck awaitingIndirectAck;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.awaitingIndirectAck = new AwaitingIndirectAck();
         this.observers = new ArrayList<NodeStateObserver>() {{
             add(observer);
@@ -33,9 +33,10 @@ public class AwaitingIndirectAckTest {
     }
 
     @Test
-    public void shouldIndicateIndirectPingIsAwaited() throws Exception {
-        this.awaitingIndirectAck.publishStateTransition(peerNode, observers);
+    public void shouldIndicateIndirectPingIsAwaited() {
+        AwaitingAck fromState = new AwaitingAck();
+        this.awaitingIndirectAck.publishStateTransition(peerNode, observers, fromState);
 
-        verify(observer).markIndirectPingAwaited(peerNode);
+        verify(observer).markIndirectPingAwaited(peerNode, fromState);
     }
 }

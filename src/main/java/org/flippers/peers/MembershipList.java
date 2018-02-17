@@ -1,6 +1,7 @@
 package org.flippers.peers;
 
 import org.flippers.config.Config;
+import org.flippers.peers.states.NodeState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +40,17 @@ public class MembershipList implements NodeStateObserver {
         return selectNodes(selectionCount);
     }
 
-    public void add(PeerNode peerNode) {
+    public PeerNode add(PeerNode peerNode) {
         this.registeredMemberNodes.add(peerNode);
         peerNode.registerObserver(this);
         peerNode.initJoining();
+        return peerNode;
+    }
+
+    public PeerNode forNode(PeerNode sourceNode) {
+        int index;
+        if((index = this.registeredMemberNodes.indexOf(sourceNode)) > -1) return this.registeredMemberNodes.get(index);
+        return this.add(sourceNode);
     }
 
     public List<PeerNode> getNodesAwaitingAck() {
@@ -68,30 +76,30 @@ public class MembershipList implements NodeStateObserver {
     }
 
     @Override
-    public void markJoined(PeerNode peerNode) {
+    public void markJoined(PeerNode peerNode, NodeState fromState) {
         //Do nothing
     }
 
     @Override
-    public void markPingAwaited(PeerNode peerNode) {
+    public void markPingAwaited(PeerNode peerNode, NodeState fromState) {
         if (!this.ackAwaitedNodes.contains(peerNode))
             this.ackAwaitedNodes.add(peerNode);
     }
 
     @Override
-    public void markIndirectPingAwaited(PeerNode peerNode) {
+    public void markIndirectPingAwaited(PeerNode peerNode, NodeState fromState) {
         if (!this.indirectAckAwaitedNodes.contains(peerNode))
             this.indirectAckAwaitedNodes.add(peerNode);
     }
 
     @Override
-    public void markFailureSuspected(PeerNode peerNode) {
+    public void markFailureSuspected(PeerNode peerNode, NodeState fromState) {
         if (!this.failureSuspectedNodes.contains(peerNode))
             this.failureSuspectedNodes.add(peerNode);
     }
 
     @Override
-    public void markAlive(PeerNode peerNode) {
+    public void markAlive(PeerNode peerNode, NodeState fromState) {
         if (!this.registeredMemberNodes.contains(peerNode))
             this.registeredMemberNodes.add(peerNode);
 
@@ -101,7 +109,7 @@ public class MembershipList implements NodeStateObserver {
     }
 
     @Override
-    public void markDead(PeerNode peerNode) {
+    public void markDead(PeerNode peerNode, NodeState fromState) {
         peerNode.deregisterObserver(this);
 
         this.registeredMemberNodes.remove(peerNode);
@@ -111,7 +119,7 @@ public class MembershipList implements NodeStateObserver {
     }
 
     @Override
-    public void markExited(PeerNode peerNode) {
+    public void markExited(PeerNode peerNode, NodeState fromState) {
         peerNode.deregisterObserver(this);
 
         this.registeredMemberNodes.remove(peerNode);

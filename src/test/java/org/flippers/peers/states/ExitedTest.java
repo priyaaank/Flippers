@@ -26,7 +26,7 @@ public class ExitedTest {
     private Exited exited;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.exited = new Exited();
         this.observers = new ArrayList<NodeStateObserver>() {{
             add(observer);
@@ -34,10 +34,11 @@ public class ExitedTest {
     }
 
     @Test
-    public void shouldIndicateNodeHasExited() throws Exception {
-        this.exited.publishStateTransition(peerNode, observers);
+    public void shouldIndicateNodeHasExited() {
+        NodeState fromState = new Alive();
+        this.exited.publishStateTransition(peerNode, observers, fromState);
 
-        verify(observer).markExited(peerNode);
+        verify(observer).markExited(peerNode, fromState);
     }
 
 }

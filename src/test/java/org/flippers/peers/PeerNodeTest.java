@@ -1,5 +1,6 @@
 package org.flippers.peers;
 
+import org.flippers.peers.states.NodeState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,37 +87,37 @@ public class PeerNodeTest {
         }
 
         @Override
-        public void markJoined(PeerNode peerNode) {
+        public void markJoined(PeerNode peerNode, NodeState fromState) {
             this.state = "JOINED";
         }
 
         @Override
-        public void markPingAwaited(PeerNode peerNode) {
+        public void markPingAwaited(PeerNode peerNode, NodeState fromState) {
             this.state = "PING_AWAITED";
         }
 
         @Override
-        public void markIndirectPingAwaited(PeerNode peerNode) {
+        public void markIndirectPingAwaited(PeerNode peerNode, NodeState fromState) {
             this.state = "INDIRECT_PING_AWAITED";
         }
 
         @Override
-        public void markAlive(PeerNode peerNode) {
+        public void markAlive(PeerNode peerNode, NodeState fromState) {
             this.state = "ALIVE";
         }
 
         @Override
-        public void markDead(PeerNode peerNode) {
+        public void markDead(PeerNode peerNode, NodeState fromState) {
             this.state = "DEAD";
         }
 
         @Override
-        public void markExited(PeerNode peerNode) {
+        public void markExited(PeerNode peerNode, NodeState fromState) {
             this.state = "EXITED";
         }
 
         @Override
-        public void markFailureSuspected(PeerNode peerNode) {
+        public void markFailureSuspected(PeerNode peerNode, NodeState fromState) {
             this.state = "FAILURE_SUSPECTED";
         }
     }

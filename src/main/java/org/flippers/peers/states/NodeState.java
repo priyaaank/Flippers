@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface NodeState {
 
-    void publishStateTransition(PeerNode node, List<NodeStateObserver> observers);
+    void publishStateTransition(PeerNode node, List<NodeStateObserver> observers, NodeState fromState);
 
 }

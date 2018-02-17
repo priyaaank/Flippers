@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Dead implements NodeState {
     @Override
-    public void publishStateTransition(PeerNode node, List<NodeStateObserver> observers) {
-        observers.forEach(o -> o.markDead(node));
+    public void publishStateTransition(PeerNode node, List<NodeStateObserver> observers, NodeState fromState) {
+        observers.forEach(o -> o.markDead(node, fromState));
     }
 }

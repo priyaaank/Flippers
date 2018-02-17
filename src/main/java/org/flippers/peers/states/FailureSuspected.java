@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FailureSuspected implements NodeState {
     @Override
-    public void publishStateTransition(PeerNode node, List<NodeStateObserver> observers) {
-        observers.forEach(o -> o.markFailureSuspected(node));
+    public void publishStateTransition(PeerNode node, List<NodeStateObserver> observers, NodeState fromState) {
+        observers.forEach(o -> o.markFailureSuspected(node, fromState));
     }
 }

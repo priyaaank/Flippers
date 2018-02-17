@@ -25,7 +25,7 @@ public class FailureSuspectedTest {
     private FailureSuspected failureSuspected;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.failureSuspected = new FailureSuspected();
         this.observers = new ArrayList<NodeStateObserver>() {{
             add(observer);
@@ -33,10 +33,11 @@ public class FailureSuspectedTest {
     }
 
     @Test
-    public void shouldIndicateThatFailureIsSuspected() throws Exception {
-        this.failureSuspected.publishStateTransition(peerNode, observers);
+    public void shouldIndicateThatFailureIsSuspected() {
+        NodeState fromState = new AwaitingIndirectAck();
+        this.failureSuspected.publishStateTransition(peerNode, observers, fromState);
 
-        verify(observer).markFailureSuspected(peerNode);
+        verify(observer).markFailureSuspected(peerNode, fromState);
     }
 
 }

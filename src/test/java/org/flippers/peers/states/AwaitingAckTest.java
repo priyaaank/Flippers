@@ -23,7 +23,7 @@ public class AwaitingAckTest {
     private AwaitingAck awaitingAck;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.awaitingAck = new AwaitingAck();
         this.observers = new ArrayList<NodeStateObserver>() {{
             add(observer);
@@ -31,9 +31,10 @@ public class AwaitingAckTest {
     }
 
     @Test
-    public void shouldIndicatePingIsAwaited() throws Exception {
-        this.awaitingAck.publishStateTransition(peerNode, observers);
+    public void shouldIndicatePingIsAwaited() {
+        NodeState fromState = new Alive();
+        this.awaitingAck.publishStateTransition(peerNode, observers, fromState);
 
-        verify(observer).markPingAwaited(peerNode);
+        verify(observer).markPingAwaited(peerNode, fromState);
     }
 }
