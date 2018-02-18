@@ -75,13 +75,6 @@ public class DataMessage {
                 decodedMessage.getListenPort());
     }
 
-    private void populateFrom(MessageProtos.Message decodedMessage) {
-        if (decodedMessage == null) return;
-        this.sequenceNumber = decodedMessage.getSequenceNumber();
-        this.messageType = MessageType.valueOf(decodedMessage.getType().toString());
-        this.sourcePort = decodedMessage.getListenPort();
-    }
-
     private static MessageProtos.Message decode(DatagramPacket packet) {
         try {
             byte[] extractedData = new byte[packet.getLength()];
