@@ -21,7 +21,7 @@ public class PingHandler implements Handler {
     }
 
     private void sendAckResponse(DataMessage receivedPingMsg) {
-        this.sender.send(messageCreator.ackResponseForReceivedMsg(receivedPingMsg));
+        this.sender.send(messageCreator.ackResponseForPingMsg(receivedPingMsg));
     }
 
 }

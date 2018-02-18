@@ -48,7 +48,7 @@ public class MessageCreatorTest {
     @Test
     public void shouldCraftAMessageForAnAckResponse() throws UnknownHostException {
         DataMessage pingMessage = messageCreator.craftPingMsg(peerNode);
-        DataMessage ackResponse = messageCreator.ackResponseForReceivedMsg(pingMessage);
+        DataMessage ackResponse = messageCreator.ackResponseForPingMsg(pingMessage);
 
         assertThat(ackResponse.getMessageType(), is(ACK));
         assertThat(ackResponse.getSourceAddress(), is(InetAddress.getLocalHost()));
