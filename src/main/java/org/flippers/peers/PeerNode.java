@@ -96,6 +96,15 @@ public class PeerNode {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "PeerNode{" +
+                "ipAddress=" + ipAddress +
+                ", port=" + port +
+                ", state=" + state +
+                '}';
+    }
+
     private void transitionState(NodeState prevState, NodeState toState) {
         this.state = toState;
         this.state.publishStateTransition(this, observers, prevState);

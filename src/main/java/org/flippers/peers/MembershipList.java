@@ -1,6 +1,7 @@
 package org.flippers.peers;
 
 import org.flippers.config.Config;
+import org.flippers.dissemination.EventGenerator;
 import org.flippers.peers.states.NodeState;
 
 import java.util.ArrayList;
@@ -22,11 +23,13 @@ public class MembershipList implements NodeStateObserver {
     private final Integer ackTimeoutMilliSeconds;
     private final Integer indirectAckTimeoutMilliSeconds;
     private final Integer failureSuspectHoldOffMilliSeconds;
+    private EventGenerator eventGenerator;
 
-    public MembershipList(Config config) {
+    public MembershipList(Config config, EventGenerator eventGenerator) {
         this.ackTimeoutMilliSeconds = config.getValue(ACK_TIMEOUT_MILLISECONDS, DEFAULT_ACK_TIMEOUT_MILLISECONDS);
         this.indirectAckTimeoutMilliSeconds = config.getValue(INDIRECT_ACK_TIMEOUT_MILLISECONDS, DEFAULT_INDIRECT_ACK_TIMEOUT_MILLISECONDS);
         this.failureSuspectHoldOffMilliSeconds = config.getValue(FAILURE_HOLD_OFF_MILLISECONDS, DEFAULT_FAILURE_HOLD_OFF_MILLISECONDS);
+        this.eventGenerator = eventGenerator;
         this.registeredMemberNodes = synchronizedList(new ArrayList<PeerNode>());
         this.ackAwaitedNodes = synchronizedList(new ArrayList<PeerNode>());
         this.indirectAckAwaitedNodes = synchronizedList(new ArrayList<PeerNode>());
@@ -43,6 +46,7 @@ public class MembershipList implements NodeStateObserver {
     public PeerNode add(PeerNode peerNode) {
         this.registeredMemberNodes.add(peerNode);
         peerNode.registerObserver(this);
+        peerNode.registerObserver(eventGenerator);
         peerNode.initJoining();
         return peerNode;
     }
@@ -111,6 +115,7 @@ public class MembershipList implements NodeStateObserver {
     @Override
     public void markDead(PeerNode peerNode, NodeState fromState) {
         peerNode.deregisterObserver(this);
+        peerNode.deregisterObserver(eventGenerator);
 
         this.registeredMemberNodes.remove(peerNode);
         this.ackAwaitedNodes.remove(peerNode);
@@ -121,6 +126,7 @@ public class MembershipList implements NodeStateObserver {
     @Override
     public void markExited(PeerNode peerNode, NodeState fromState) {
         peerNode.deregisterObserver(this);
+        peerNode.deregisterObserver(eventGenerator);
 
         this.registeredMemberNodes.remove(peerNode);
         this.ackAwaitedNodes.remove(peerNode);

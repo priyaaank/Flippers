@@ -6,11 +6,14 @@ import org.flippers.peers.states.AwaitingAck;
 import org.flippers.peers.states.AwaitingIndirectAck;
 import org.flippers.peers.states.Joined;
 import org.flippers.peers.states.NodeState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.flippers.dissemination.EventType.*;
 
 public class EventGenerator implements NodeStateObserver {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(EventGenerator.class);
     private EventLog eventLog;
 
     public EventGenerator(EventLog eventLog) {
@@ -29,8 +32,10 @@ public class EventGenerator implements NodeStateObserver {
 
     @Override
     public void markAlive(PeerNode peerNode, NodeState fromState) {
-        if(fromState instanceof AwaitingAck || fromState instanceof AwaitingIndirectAck || fromState instanceof Joined)
+        if(fromState instanceof AwaitingAck || fromState instanceof AwaitingIndirectAck || fromState instanceof Joined) {
+            LOGGER.debug("Node {} does not seem to be dead. Ignoring its alive status", peerNode);
             return;
+        }
 
         this.eventLog.enqueue(new Event(peerNode.getIpAddress().getHostAddress(), ALIVE));
     }

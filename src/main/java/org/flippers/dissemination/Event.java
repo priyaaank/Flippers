@@ -27,10 +27,20 @@ public class Event implements Comparable {
 
     @Override
     public int compareTo(Object otherEvent) {
-        if (this.equals(otherEvent) || this.nodesNotifiedCount.get() == ((Event)otherEvent).nodesNotifiedCount.get()) {
-            return 0;
-        } else {
-            return this.nodesNotifiedCount.get() > ((Event)otherEvent).nodesNotifiedCount.get() ? 1 : -1;
-        }
+        if (this.equals(otherEvent)) return 0;
+        if(this.nodesNotifiedCount == null && ((Event)otherEvent).nodesNotifiedCount == null) return 0;
+        if(this.nodesNotifiedCount == null) return -1;
+        if(((Event)otherEvent).nodesNotifiedCount == null) return 1;
+        if(this.nodesNotifiedCount.get() == ((Event)otherEvent).nodesNotifiedCount.get()) return 0;
+        return this.nodesNotifiedCount.get() > ((Event)otherEvent).nodesNotifiedCount.get() ? 1 : -1;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "eventType=" + eventType +
+                ", hostIp='" + hostIp + '\'' +
+                ", nodesNotifiedCount=" + nodesNotifiedCount +
+                '}';
     }
 }

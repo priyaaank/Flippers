@@ -2,6 +2,8 @@ package org.flippers.peers;
 
 import org.flippers.config.Config;
 import org.flippers.config.FileConfig;
+import org.flippers.dissemination.EventGenerator;
+import org.flippers.dissemination.EventLog;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,15 +25,17 @@ public class MembershipListTest {
     private MembershipList membershipList;
 
     private Config config;
+    private EventGenerator eventGenerator;
 
     @Before
     public void setUp() throws Exception {
         this.config = new FileConfig();
-        this.membershipList = new MembershipList(config);
+        this.eventGenerator = new EventGenerator(new EventLog(config));
+        this.membershipList = new MembershipList(config, eventGenerator);
     }
 
     private void registerNMemberNodes() throws UnknownHostException {
-        this.membershipList = new MembershipList(config);
+        this.membershipList = new MembershipList(config, eventGenerator);
         this.membershipList.add(buildTestNode(0));
         this.membershipList.add(buildTestNode(1));
         this.membershipList.add(buildTestNode(2));

@@ -12,6 +12,7 @@ public interface Config {
         String FAILURE_DETECTION_INITIAL_DELAY = "flipper.failure.detection.initial.delay.millis";
         String FAILURE_DETECTION_DELAY_PERIOD = "flipper.failure.detection.delay.period.millis";
         String RANDOM_NODE_SELECTION_COUNT = "flipper.dissemination.random.node.selection.count";
+        String EVENT_LOG_QUEUE_SIZE = "flipper.dissemination.even.log.queue.size";
 
     }
 
@@ -25,6 +26,8 @@ public interface Config {
         Integer DEFAULT_FAILURE_DETECTION_INITIAL_DELAY = 1000;
         Integer DEFAULT_FAILURE_DETECTION_DELAY_PERIOD = 1000;
         Integer DEFAULT_RANDOM_NODE_SELECTION_COUNT = 5;
+        Integer DEFAULT_EVENT_QUEUE_SIZE = 10000;
+
 
     }
 

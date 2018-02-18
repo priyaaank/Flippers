@@ -1,6 +1,8 @@
 package org.flippers.agent;
 
 import org.flippers.config.FileConfig;
+import org.flippers.dissemination.EventGenerator;
+import org.flippers.dissemination.EventLog;
 import org.flippers.handlers.HandlerExecutor;
 import org.flippers.handlers.MessageHandlerExecutor;
 import org.flippers.handlers.MessageTypeRegistry;
@@ -28,12 +30,14 @@ public class FlipperAgent {
     private MessageTypeRegistry registry;
     private FailureDetector failureDetector;
     private MembershipList membershipList;
+    private EventGenerator eventGenerator;
     private AtomicBoolean shutdownInitiated = new AtomicBoolean(Boolean.FALSE);
 
     public FlipperAgent(FileConfig config) throws SocketException {
         this.socket = new DatagramSocket(config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT));
         Integer corePoolSize = config.getValue(THREAD_POOL_SIZE, DEFAULT_THREAD_POOL_COUNT);
-        this.membershipList = new MembershipList(config);
+        this.eventGenerator = new EventGenerator(new EventLog(config));
+        this.membershipList = new MembershipList(config, this.eventGenerator);
         this.executorService = Executors.newFixedThreadPool(corePoolSize);
         this.sender = new MessageSender(this.socket, this.executorService);
         this.registry = new MessageTypeRegistry(this.sender, config, this.membershipList);
@@ -51,7 +55,7 @@ public class FlipperAgent {
         this.failureDetector.startDetection();
     }
 
-    public void stop() throws InterruptedException {
+    public void stop() {
         if (shutdownInitiated.compareAndSet(Boolean.FALSE, Boolean.TRUE)) {
             this.socket.close();
         }
