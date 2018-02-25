@@ -1310,6 +1310,10 @@ public final class MessageProtos {
        * <code>LEFT = 4;</code>
        */
       LEFT(4),
+      /**
+       * <code>MEMBER = 5;</code>
+       */
+      MEMBER(5),
       UNRECOGNIZED(-1),
       ;
 
@@ -1333,6 +1337,10 @@ public final class MessageProtos {
        * <code>LEFT = 4;</code>
        */
       public static final int LEFT_VALUE = 4;
+      /**
+       * <code>MEMBER = 5;</code>
+       */
+      public static final int MEMBER_VALUE = 5;
 
 
       public final int getNumber() {
@@ -1358,6 +1366,7 @@ public final class MessageProtos {
           case 2: return SUSPECT;
           case 3: return DEAD;
           case 4: return LEFT;
+          case 5: return MEMBER;
           default: return null;
         }
       }
@@ -1996,12 +2005,13 @@ public final class MessageProtos {
       "pe\022\026\n\016sequenceNumber\030\002 \001(\t\022\022\n\nlistenPort" +
       "\030\003 \001(\005\022+\n\tnodesInfo\030\004 \003(\0132\030.messages.Add" +
       "itionalInfo\"/\n\013MessageType\022\010\n\004PING\020\000\022\007\n\003" +
-      "ACK\020\001\022\r\n\tPING_NODE\020\002\"\246\001\n\016AdditionalInfo\022" +
+      "ACK\020\001\022\r\n\tPING_NODE\020\002\"\262\001\n\016AdditionalInfo\022" +
       "\021\n\tipAddress\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\022/\n\004type" +
       "\030\003 \001(\0162!.messages.AdditionalInfo.InfoTyp" +
-      "e\"B\n\010InfoType\022\t\n\005ALIVE\020\000\022\n\n\006JOINED\020\001\022\013\n\007" +
-      "SUSPECT\020\002\022\010\n\004DEAD\020\003\022\010\n\004LEFT\020\004B&\n\025org.fli",
-      "ppers.messagesB\rMessageProtosb\006proto3"
+      "e\"N\n\010InfoType\022\t\n\005ALIVE\020\000\022\n\n\006JOINED\020\001\022\013\n\007" +
+      "SUSPECT\020\002\022\010\n\004DEAD\020\003\022\010\n\004LEFT\020\004\022\n\n\006MEMBER\020",
+      "\005B&\n\025org.flippers.messagesB\rMessageProto" +
+      "sb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

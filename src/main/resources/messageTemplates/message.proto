@@ -32,6 +32,7 @@ message AdditionalInfo {
         SUSPECT = 2;
         DEAD = 3;
         LEFT = 4;
+        MEMBER = 5;
     }
 
 }
