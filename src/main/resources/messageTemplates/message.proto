@@ -10,11 +10,28 @@ message Message {
     MessageType type = 1;
     string sequenceNumber = 2;
     int32 listenPort = 3;
+    repeated AdditionalInfo nodesInfo = 4;
 
     enum MessageType {
         PING = 0;
         ACK = 1;
         PING_NODE = 2;
     };
+
+}
+
+message AdditionalInfo {
+
+    string ipAddress = 1;
+    int32 port = 2;
+    InfoType type = 3;
+
+    enum InfoType {
+        ALIVE = 0;
+        JOINED = 1;
+        SUSPECT = 2;
+        DEAD = 3;
+        LEFT = 4;
+    }
 
 }

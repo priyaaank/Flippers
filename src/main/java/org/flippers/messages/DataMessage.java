@@ -28,8 +28,8 @@ public class DataMessage {
     }
 
     public DatagramPacket toDatagramPacket() {
-        MessageProtos.Message message = MessageProtos.Message.newBuilder().
-                setSequenceNumber(this.sequenceNumber)
+        MessageProtos.Message message = MessageProtos.Message.newBuilder()
+                .setSequenceNumber(this.sequenceNumber)
                 .setType(MessageProtos.Message.MessageType.valueOf(this.messageType.toString()))
                 .setListenPort(this.sourcePort)
                 .build();

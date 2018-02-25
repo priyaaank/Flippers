@@ -41,6 +41,30 @@ public final class MessageProtos {
      * <code>int32 listenPort = 3;</code>
      */
     int getListenPort();
+
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    java.util.List<org.flippers.messages.MessageProtos.AdditionalInfo> 
+        getNodesInfoList();
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    org.flippers.messages.MessageProtos.AdditionalInfo getNodesInfo(int index);
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    int getNodesInfoCount();
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    java.util.List<? extends org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder> 
+        getNodesInfoOrBuilderList();
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder getNodesInfoOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code messages.Message}
@@ -58,6 +82,7 @@ public final class MessageProtos {
       type_ = 0;
       sequenceNumber_ = "";
       listenPort_ = 0;
+      nodesInfo_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -105,6 +130,15 @@ public final class MessageProtos {
               listenPort_ = input.readInt32();
               break;
             }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                nodesInfo_ = new java.util.ArrayList<org.flippers.messages.MessageProtos.AdditionalInfo>();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              nodesInfo_.add(
+                  input.readMessage(org.flippers.messages.MessageProtos.AdditionalInfo.parser(), extensionRegistry));
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -113,6 +147,9 @@ public final class MessageProtos {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+          nodesInfo_ = java.util.Collections.unmodifiableList(nodesInfo_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -236,6 +273,7 @@ public final class MessageProtos {
       // @@protoc_insertion_point(enum_scope:messages.Message.MessageType)
     }
 
+    private int bitField0_;
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
@@ -295,6 +333,41 @@ public final class MessageProtos {
       return listenPort_;
     }
 
+    public static final int NODESINFO_FIELD_NUMBER = 4;
+    private java.util.List<org.flippers.messages.MessageProtos.AdditionalInfo> nodesInfo_;
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    public java.util.List<org.flippers.messages.MessageProtos.AdditionalInfo> getNodesInfoList() {
+      return nodesInfo_;
+    }
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    public java.util.List<? extends org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder> 
+        getNodesInfoOrBuilderList() {
+      return nodesInfo_;
+    }
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    public int getNodesInfoCount() {
+      return nodesInfo_.size();
+    }
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    public org.flippers.messages.MessageProtos.AdditionalInfo getNodesInfo(int index) {
+      return nodesInfo_.get(index);
+    }
+    /**
+     * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+     */
+    public org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder getNodesInfoOrBuilder(
+        int index) {
+      return nodesInfo_.get(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -316,6 +389,9 @@ public final class MessageProtos {
       if (listenPort_ != 0) {
         output.writeInt32(3, listenPort_);
       }
+      for (int i = 0; i < nodesInfo_.size(); i++) {
+        output.writeMessage(4, nodesInfo_.get(i));
+      }
       unknownFields.writeTo(output);
     }
 
@@ -334,6 +410,10 @@ public final class MessageProtos {
       if (listenPort_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, listenPort_);
+      }
+      for (int i = 0; i < nodesInfo_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, nodesInfo_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -356,6 +436,8 @@ public final class MessageProtos {
           .equals(other.getSequenceNumber());
       result = result && (getListenPort()
           == other.getListenPort());
+      result = result && getNodesInfoList()
+          .equals(other.getNodesInfoList());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -373,6 +455,10 @@ public final class MessageProtos {
       hash = (53 * hash) + getSequenceNumber().hashCode();
       hash = (37 * hash) + LISTENPORT_FIELD_NUMBER;
       hash = (53 * hash) + getListenPort();
+      if (getNodesInfoCount() > 0) {
+        hash = (37 * hash) + NODESINFO_FIELD_NUMBER;
+        hash = (53 * hash) + getNodesInfoList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -498,6 +584,7 @@ public final class MessageProtos {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
+          getNodesInfoFieldBuilder();
         }
       }
       public Builder clear() {
@@ -508,6 +595,12 @@ public final class MessageProtos {
 
         listenPort_ = 0;
 
+        if (nodesInfoBuilder_ == null) {
+          nodesInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+        } else {
+          nodesInfoBuilder_.clear();
+        }
         return this;
       }
 
@@ -530,9 +623,21 @@ public final class MessageProtos {
 
       public org.flippers.messages.MessageProtos.Message buildPartial() {
         org.flippers.messages.MessageProtos.Message result = new org.flippers.messages.MessageProtos.Message(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         result.type_ = type_;
         result.sequenceNumber_ = sequenceNumber_;
         result.listenPort_ = listenPort_;
+        if (nodesInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            nodesInfo_ = java.util.Collections.unmodifiableList(nodesInfo_);
+            bitField0_ = (bitField0_ & ~0x00000008);
+          }
+          result.nodesInfo_ = nodesInfo_;
+        } else {
+          result.nodesInfo_ = nodesInfoBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -584,6 +689,32 @@ public final class MessageProtos {
         if (other.getListenPort() != 0) {
           setListenPort(other.getListenPort());
         }
+        if (nodesInfoBuilder_ == null) {
+          if (!other.nodesInfo_.isEmpty()) {
+            if (nodesInfo_.isEmpty()) {
+              nodesInfo_ = other.nodesInfo_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+            } else {
+              ensureNodesInfoIsMutable();
+              nodesInfo_.addAll(other.nodesInfo_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.nodesInfo_.isEmpty()) {
+            if (nodesInfoBuilder_.isEmpty()) {
+              nodesInfoBuilder_.dispose();
+              nodesInfoBuilder_ = null;
+              nodesInfo_ = other.nodesInfo_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+              nodesInfoBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getNodesInfoFieldBuilder() : null;
+            } else {
+              nodesInfoBuilder_.addAllMessages(other.nodesInfo_);
+            }
+          }
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -610,6 +741,7 @@ public final class MessageProtos {
         }
         return this;
       }
+      private int bitField0_;
 
       private int type_ = 0;
       /**
@@ -749,6 +881,246 @@ public final class MessageProtos {
         onChanged();
         return this;
       }
+
+      private java.util.List<org.flippers.messages.MessageProtos.AdditionalInfo> nodesInfo_ =
+        java.util.Collections.emptyList();
+      private void ensureNodesInfoIsMutable() {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+          nodesInfo_ = new java.util.ArrayList<org.flippers.messages.MessageProtos.AdditionalInfo>(nodesInfo_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          org.flippers.messages.MessageProtos.AdditionalInfo, org.flippers.messages.MessageProtos.AdditionalInfo.Builder, org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder> nodesInfoBuilder_;
+
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public java.util.List<org.flippers.messages.MessageProtos.AdditionalInfo> getNodesInfoList() {
+        if (nodesInfoBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(nodesInfo_);
+        } else {
+          return nodesInfoBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public int getNodesInfoCount() {
+        if (nodesInfoBuilder_ == null) {
+          return nodesInfo_.size();
+        } else {
+          return nodesInfoBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public org.flippers.messages.MessageProtos.AdditionalInfo getNodesInfo(int index) {
+        if (nodesInfoBuilder_ == null) {
+          return nodesInfo_.get(index);
+        } else {
+          return nodesInfoBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public Builder setNodesInfo(
+          int index, org.flippers.messages.MessageProtos.AdditionalInfo value) {
+        if (nodesInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureNodesInfoIsMutable();
+          nodesInfo_.set(index, value);
+          onChanged();
+        } else {
+          nodesInfoBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public Builder setNodesInfo(
+          int index, org.flippers.messages.MessageProtos.AdditionalInfo.Builder builderForValue) {
+        if (nodesInfoBuilder_ == null) {
+          ensureNodesInfoIsMutable();
+          nodesInfo_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          nodesInfoBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public Builder addNodesInfo(org.flippers.messages.MessageProtos.AdditionalInfo value) {
+        if (nodesInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureNodesInfoIsMutable();
+          nodesInfo_.add(value);
+          onChanged();
+        } else {
+          nodesInfoBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public Builder addNodesInfo(
+          int index, org.flippers.messages.MessageProtos.AdditionalInfo value) {
+        if (nodesInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureNodesInfoIsMutable();
+          nodesInfo_.add(index, value);
+          onChanged();
+        } else {
+          nodesInfoBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public Builder addNodesInfo(
+          org.flippers.messages.MessageProtos.AdditionalInfo.Builder builderForValue) {
+        if (nodesInfoBuilder_ == null) {
+          ensureNodesInfoIsMutable();
+          nodesInfo_.add(builderForValue.build());
+          onChanged();
+        } else {
+          nodesInfoBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public Builder addNodesInfo(
+          int index, org.flippers.messages.MessageProtos.AdditionalInfo.Builder builderForValue) {
+        if (nodesInfoBuilder_ == null) {
+          ensureNodesInfoIsMutable();
+          nodesInfo_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          nodesInfoBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public Builder addAllNodesInfo(
+          java.lang.Iterable<? extends org.flippers.messages.MessageProtos.AdditionalInfo> values) {
+        if (nodesInfoBuilder_ == null) {
+          ensureNodesInfoIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, nodesInfo_);
+          onChanged();
+        } else {
+          nodesInfoBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public Builder clearNodesInfo() {
+        if (nodesInfoBuilder_ == null) {
+          nodesInfo_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+          onChanged();
+        } else {
+          nodesInfoBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public Builder removeNodesInfo(int index) {
+        if (nodesInfoBuilder_ == null) {
+          ensureNodesInfoIsMutable();
+          nodesInfo_.remove(index);
+          onChanged();
+        } else {
+          nodesInfoBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public org.flippers.messages.MessageProtos.AdditionalInfo.Builder getNodesInfoBuilder(
+          int index) {
+        return getNodesInfoFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder getNodesInfoOrBuilder(
+          int index) {
+        if (nodesInfoBuilder_ == null) {
+          return nodesInfo_.get(index);  } else {
+          return nodesInfoBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public java.util.List<? extends org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder> 
+           getNodesInfoOrBuilderList() {
+        if (nodesInfoBuilder_ != null) {
+          return nodesInfoBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(nodesInfo_);
+        }
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public org.flippers.messages.MessageProtos.AdditionalInfo.Builder addNodesInfoBuilder() {
+        return getNodesInfoFieldBuilder().addBuilder(
+            org.flippers.messages.MessageProtos.AdditionalInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public org.flippers.messages.MessageProtos.AdditionalInfo.Builder addNodesInfoBuilder(
+          int index) {
+        return getNodesInfoFieldBuilder().addBuilder(
+            index, org.flippers.messages.MessageProtos.AdditionalInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .messages.AdditionalInfo nodesInfo = 4;</code>
+       */
+      public java.util.List<org.flippers.messages.MessageProtos.AdditionalInfo.Builder> 
+           getNodesInfoBuilderList() {
+        return getNodesInfoFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          org.flippers.messages.MessageProtos.AdditionalInfo, org.flippers.messages.MessageProtos.AdditionalInfo.Builder, org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder> 
+          getNodesInfoFieldBuilder() {
+        if (nodesInfoBuilder_ == null) {
+          nodesInfoBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              org.flippers.messages.MessageProtos.AdditionalInfo, org.flippers.messages.MessageProtos.AdditionalInfo.Builder, org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder>(
+                  nodesInfo_,
+                  ((bitField0_ & 0x00000008) == 0x00000008),
+                  getParentForChildren(),
+                  isClean());
+          nodesInfo_ = null;
+        }
+        return nodesInfoBuilder_;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -798,11 +1170,818 @@ public final class MessageProtos {
 
   }
 
+  public interface AdditionalInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:messages.AdditionalInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string ipAddress = 1;</code>
+     */
+    java.lang.String getIpAddress();
+    /**
+     * <code>string ipAddress = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getIpAddressBytes();
+
+    /**
+     * <code>int32 port = 2;</code>
+     */
+    int getPort();
+
+    /**
+     * <code>.messages.AdditionalInfo.InfoType type = 3;</code>
+     */
+    int getTypeValue();
+    /**
+     * <code>.messages.AdditionalInfo.InfoType type = 3;</code>
+     */
+    org.flippers.messages.MessageProtos.AdditionalInfo.InfoType getType();
+  }
+  /**
+   * Protobuf type {@code messages.AdditionalInfo}
+   */
+  public  static final class AdditionalInfo extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:messages.AdditionalInfo)
+      AdditionalInfoOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use AdditionalInfo.newBuilder() to construct.
+    private AdditionalInfo(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private AdditionalInfo() {
+      ipAddress_ = "";
+      port_ = 0;
+      type_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AdditionalInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              ipAddress_ = s;
+              break;
+            }
+            case 16: {
+
+              port_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+
+              type_ = rawValue;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.flippers.messages.MessageProtos.internal_static_messages_AdditionalInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.flippers.messages.MessageProtos.internal_static_messages_AdditionalInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.flippers.messages.MessageProtos.AdditionalInfo.class, org.flippers.messages.MessageProtos.AdditionalInfo.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code messages.AdditionalInfo.InfoType}
+     */
+    public enum InfoType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>ALIVE = 0;</code>
+       */
+      ALIVE(0),
+      /**
+       * <code>JOINED = 1;</code>
+       */
+      JOINED(1),
+      /**
+       * <code>SUSPECT = 2;</code>
+       */
+      SUSPECT(2),
+      /**
+       * <code>DEAD = 3;</code>
+       */
+      DEAD(3),
+      /**
+       * <code>LEFT = 4;</code>
+       */
+      LEFT(4),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>ALIVE = 0;</code>
+       */
+      public static final int ALIVE_VALUE = 0;
+      /**
+       * <code>JOINED = 1;</code>
+       */
+      public static final int JOINED_VALUE = 1;
+      /**
+       * <code>SUSPECT = 2;</code>
+       */
+      public static final int SUSPECT_VALUE = 2;
+      /**
+       * <code>DEAD = 3;</code>
+       */
+      public static final int DEAD_VALUE = 3;
+      /**
+       * <code>LEFT = 4;</code>
+       */
+      public static final int LEFT_VALUE = 4;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static InfoType valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static InfoType forNumber(int value) {
+        switch (value) {
+          case 0: return ALIVE;
+          case 1: return JOINED;
+          case 2: return SUSPECT;
+          case 3: return DEAD;
+          case 4: return LEFT;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<InfoType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          InfoType> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<InfoType>() {
+              public InfoType findValueByNumber(int number) {
+                return InfoType.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return org.flippers.messages.MessageProtos.AdditionalInfo.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final InfoType[] VALUES = values();
+
+      public static InfoType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private InfoType(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:messages.AdditionalInfo.InfoType)
+    }
+
+    public static final int IPADDRESS_FIELD_NUMBER = 1;
+    private volatile java.lang.Object ipAddress_;
+    /**
+     * <code>string ipAddress = 1;</code>
+     */
+    public java.lang.String getIpAddress() {
+      java.lang.Object ref = ipAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ipAddress_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string ipAddress = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getIpAddressBytes() {
+      java.lang.Object ref = ipAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ipAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 2;
+    private int port_;
+    /**
+     * <code>int32 port = 2;</code>
+     */
+    public int getPort() {
+      return port_;
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 3;
+    private int type_;
+    /**
+     * <code>.messages.AdditionalInfo.InfoType type = 3;</code>
+     */
+    public int getTypeValue() {
+      return type_;
+    }
+    /**
+     * <code>.messages.AdditionalInfo.InfoType type = 3;</code>
+     */
+    public org.flippers.messages.MessageProtos.AdditionalInfo.InfoType getType() {
+      org.flippers.messages.MessageProtos.AdditionalInfo.InfoType result = org.flippers.messages.MessageProtos.AdditionalInfo.InfoType.valueOf(type_);
+      return result == null ? org.flippers.messages.MessageProtos.AdditionalInfo.InfoType.UNRECOGNIZED : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getIpAddressBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, ipAddress_);
+      }
+      if (port_ != 0) {
+        output.writeInt32(2, port_);
+      }
+      if (type_ != org.flippers.messages.MessageProtos.AdditionalInfo.InfoType.ALIVE.getNumber()) {
+        output.writeEnum(3, type_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getIpAddressBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, ipAddress_);
+      }
+      if (port_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, port_);
+      }
+      if (type_ != org.flippers.messages.MessageProtos.AdditionalInfo.InfoType.ALIVE.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, type_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.flippers.messages.MessageProtos.AdditionalInfo)) {
+        return super.equals(obj);
+      }
+      org.flippers.messages.MessageProtos.AdditionalInfo other = (org.flippers.messages.MessageProtos.AdditionalInfo) obj;
+
+      boolean result = true;
+      result = result && getIpAddress()
+          .equals(other.getIpAddress());
+      result = result && (getPort()
+          == other.getPort());
+      result = result && type_ == other.type_;
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + IPADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getIpAddress().hashCode();
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort();
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + type_;
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static org.flippers.messages.MessageProtos.AdditionalInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(org.flippers.messages.MessageProtos.AdditionalInfo prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code messages.AdditionalInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:messages.AdditionalInfo)
+        org.flippers.messages.MessageProtos.AdditionalInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.flippers.messages.MessageProtos.internal_static_messages_AdditionalInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.flippers.messages.MessageProtos.internal_static_messages_AdditionalInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.flippers.messages.MessageProtos.AdditionalInfo.class, org.flippers.messages.MessageProtos.AdditionalInfo.Builder.class);
+      }
+
+      // Construct using org.flippers.messages.MessageProtos.AdditionalInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        ipAddress_ = "";
+
+        port_ = 0;
+
+        type_ = 0;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.flippers.messages.MessageProtos.internal_static_messages_AdditionalInfo_descriptor;
+      }
+
+      public org.flippers.messages.MessageProtos.AdditionalInfo getDefaultInstanceForType() {
+        return org.flippers.messages.MessageProtos.AdditionalInfo.getDefaultInstance();
+      }
+
+      public org.flippers.messages.MessageProtos.AdditionalInfo build() {
+        org.flippers.messages.MessageProtos.AdditionalInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.flippers.messages.MessageProtos.AdditionalInfo buildPartial() {
+        org.flippers.messages.MessageProtos.AdditionalInfo result = new org.flippers.messages.MessageProtos.AdditionalInfo(this);
+        result.ipAddress_ = ipAddress_;
+        result.port_ = port_;
+        result.type_ = type_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.flippers.messages.MessageProtos.AdditionalInfo) {
+          return mergeFrom((org.flippers.messages.MessageProtos.AdditionalInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.flippers.messages.MessageProtos.AdditionalInfo other) {
+        if (other == org.flippers.messages.MessageProtos.AdditionalInfo.getDefaultInstance()) return this;
+        if (!other.getIpAddress().isEmpty()) {
+          ipAddress_ = other.ipAddress_;
+          onChanged();
+        }
+        if (other.getPort() != 0) {
+          setPort(other.getPort());
+        }
+        if (other.type_ != 0) {
+          setTypeValue(other.getTypeValue());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.flippers.messages.MessageProtos.AdditionalInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.flippers.messages.MessageProtos.AdditionalInfo) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object ipAddress_ = "";
+      /**
+       * <code>string ipAddress = 1;</code>
+       */
+      public java.lang.String getIpAddress() {
+        java.lang.Object ref = ipAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          ipAddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string ipAddress = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIpAddressBytes() {
+        java.lang.Object ref = ipAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ipAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string ipAddress = 1;</code>
+       */
+      public Builder setIpAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        ipAddress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ipAddress = 1;</code>
+       */
+      public Builder clearIpAddress() {
+        
+        ipAddress_ = getDefaultInstance().getIpAddress();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ipAddress = 1;</code>
+       */
+      public Builder setIpAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        ipAddress_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int port_ ;
+      /**
+       * <code>int32 port = 2;</code>
+       */
+      public int getPort() {
+        return port_;
+      }
+      /**
+       * <code>int32 port = 2;</code>
+       */
+      public Builder setPort(int value) {
+        
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 port = 2;</code>
+       */
+      public Builder clearPort() {
+        
+        port_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int type_ = 0;
+      /**
+       * <code>.messages.AdditionalInfo.InfoType type = 3;</code>
+       */
+      public int getTypeValue() {
+        return type_;
+      }
+      /**
+       * <code>.messages.AdditionalInfo.InfoType type = 3;</code>
+       */
+      public Builder setTypeValue(int value) {
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.messages.AdditionalInfo.InfoType type = 3;</code>
+       */
+      public org.flippers.messages.MessageProtos.AdditionalInfo.InfoType getType() {
+        org.flippers.messages.MessageProtos.AdditionalInfo.InfoType result = org.flippers.messages.MessageProtos.AdditionalInfo.InfoType.valueOf(type_);
+        return result == null ? org.flippers.messages.MessageProtos.AdditionalInfo.InfoType.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.messages.AdditionalInfo.InfoType type = 3;</code>
+       */
+      public Builder setType(org.flippers.messages.MessageProtos.AdditionalInfo.InfoType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.messages.AdditionalInfo.InfoType type = 3;</code>
+       */
+      public Builder clearType() {
+        
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:messages.AdditionalInfo)
+    }
+
+    // @@protoc_insertion_point(class_scope:messages.AdditionalInfo)
+    private static final org.flippers.messages.MessageProtos.AdditionalInfo DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new org.flippers.messages.MessageProtos.AdditionalInfo();
+    }
+
+    public static org.flippers.messages.MessageProtos.AdditionalInfo getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<AdditionalInfo>
+        PARSER = new com.google.protobuf.AbstractParser<AdditionalInfo>() {
+      public AdditionalInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new AdditionalInfo(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<AdditionalInfo> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AdditionalInfo> getParserForType() {
+      return PARSER;
+    }
+
+    public org.flippers.messages.MessageProtos.AdditionalInfo getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_messages_Message_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_messages_Message_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_messages_AdditionalInfo_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_messages_AdditionalInfo_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -812,12 +1991,17 @@ public final class MessageProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rmessage.proto\022\010messages\"\223\001\n\007Message\022+\n" +
+      "\n\rmessage.proto\022\010messages\"\300\001\n\007Message\022+\n" +
       "\004type\030\001 \001(\0162\035.messages.Message.MessageTy" +
       "pe\022\026\n\016sequenceNumber\030\002 \001(\t\022\022\n\nlistenPort" +
-      "\030\003 \001(\005\"/\n\013MessageType\022\010\n\004PING\020\000\022\007\n\003ACK\020\001" +
-      "\022\r\n\tPING_NODE\020\002B&\n\025org.flippers.messages" +
-      "B\rMessageProtosb\006proto3"
+      "\030\003 \001(\005\022+\n\tnodesInfo\030\004 \003(\0132\030.messages.Add" +
+      "itionalInfo\"/\n\013MessageType\022\010\n\004PING\020\000\022\007\n\003" +
+      "ACK\020\001\022\r\n\tPING_NODE\020\002\"\246\001\n\016AdditionalInfo\022" +
+      "\021\n\tipAddress\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\022/\n\004type" +
+      "\030\003 \001(\0162!.messages.AdditionalInfo.InfoTyp" +
+      "e\"B\n\010InfoType\022\t\n\005ALIVE\020\000\022\n\n\006JOINED\020\001\022\013\n\007" +
+      "SUSPECT\020\002\022\010\n\004DEAD\020\003\022\010\n\004LEFT\020\004B&\n\025org.fli",
+      "ppers.messagesB\rMessageProtosb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -836,7 +2020,13 @@ public final class MessageProtos {
     internal_static_messages_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_messages_Message_descriptor,
-        new java.lang.String[] { "Type", "SequenceNumber", "ListenPort", });
+        new java.lang.String[] { "Type", "SequenceNumber", "ListenPort", "NodesInfo", });
+    internal_static_messages_AdditionalInfo_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_messages_AdditionalInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_messages_AdditionalInfo_descriptor,
+        new java.lang.String[] { "IpAddress", "Port", "Type", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
