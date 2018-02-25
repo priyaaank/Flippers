@@ -13,6 +13,7 @@ public interface Config {
         String FAILURE_DETECTION_DELAY_PERIOD = "flipper.failure.detection.delay.period.millis";
         String RANDOM_NODE_SELECTION_COUNT = "flipper.dissemination.random.node.selection.count";
         String EVENT_LOG_QUEUE_SIZE = "flipper.dissemination.even.log.queue.size";
+        String SEED_NODES = "flipper.seed.nodes";
 
     }
 
@@ -27,11 +28,13 @@ public interface Config {
         Integer DEFAULT_FAILURE_DETECTION_DELAY_PERIOD = 1000;
         Integer DEFAULT_RANDOM_NODE_SELECTION_COUNT = 5;
         Integer DEFAULT_EVENT_QUEUE_SIZE = 10000;
-
+        String DEFAULT_SEED_NODES = null;
 
     }
 
     String getValue(String keyName, String defaultValue);
+
+    String[] getValues(String keyName, String defaultValue);
 
     Integer getValue(String keyName, Integer defaultValue);
 

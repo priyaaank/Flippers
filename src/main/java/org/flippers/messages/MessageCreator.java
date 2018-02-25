@@ -3,6 +3,8 @@ package org.flippers.messages;
 import org.flippers.config.Config;
 import org.flippers.peers.PeerNode;
 
+import javax.xml.crypto.Data;
+
 import static org.flippers.config.Config.DefaultValues.DEFAULT_LISTEN_PORT;
 import static org.flippers.config.Config.KeyNames.LISTEN_PORT;
 
@@ -47,11 +49,24 @@ public class MessageCreator {
     }
 
     public DataMessage ackResponseForJoinMsg(DataMessage joinMessage) {
+        //Eventually modify to include membership list details.
+        //This will allow a joinee to retrieve a full membership
+        //list
         return new DataMessage(
                 sequenceNumberGenerator.uniqSequence(),
                 joinMessage.getSourceAddress(),
                 MessageType.ACK_JOIN,
                 joinMessage.getSourcePort(),
+                config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
+        );
+    }
+
+    public DataMessage craftJoinMessage(PeerNode seedNode) {
+        return new DataMessage(
+                sequenceNumberGenerator.uniqSequence(),
+                seedNode.getIpAddress(),
+                MessageType.JOIN,
+                seedNode.getPort(),
                 config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
         );
     }

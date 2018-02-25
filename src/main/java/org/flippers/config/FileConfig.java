@@ -5,10 +5,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class FileConfig implements Config {
 
+    public static final String VALUES_SEPARATOR = ",";
     private static String DEFAULT_PROPERTIES_FILE = "flipper.config.default.properties";
     private final Properties properties;
     private final static Logger LOGGER = LoggerFactory.getLogger(FileConfig.class);
@@ -25,6 +27,13 @@ public class FileConfig implements Config {
     @Override
     public String getValue(String keyName, String defaultValue) {
         return this.properties.getProperty(keyName, defaultValue);
+    }
+
+    @Override
+    public String[] getValues(String keyName, String defaultValue) {
+        String values = this.properties.getProperty(keyName, defaultValue);
+        if (values == null) return new String[0];
+        return values.split(VALUES_SEPARATOR);
     }
 
     @Override

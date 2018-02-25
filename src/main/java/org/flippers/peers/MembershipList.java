@@ -20,10 +20,13 @@ public class MembershipList implements NodeStateObserver {
     private final List<PeerNode> ackAwaitedNodes;
     private final List<PeerNode> indirectAckAwaitedNodes;
     private final List<PeerNode> failureSuspectedNodes;
+    private final List<PeerNode> awaitingJoinAckNodes;
+    private final List<PeerNode> emptyList = new ArrayList<>();
     private final Integer ackTimeoutMilliSeconds;
     private final Integer indirectAckTimeoutMilliSeconds;
     private final Integer failureSuspectHoldOffMilliSeconds;
     private EventGenerator eventGenerator;
+
 
     public MembershipList(Config config, EventGenerator eventGenerator) {
         this.ackTimeoutMilliSeconds = config.getValue(ACK_TIMEOUT_MILLISECONDS, DEFAULT_ACK_TIMEOUT_MILLISECONDS);
@@ -34,10 +37,11 @@ public class MembershipList implements NodeStateObserver {
         this.ackAwaitedNodes = synchronizedList(new ArrayList<PeerNode>());
         this.indirectAckAwaitedNodes = synchronizedList(new ArrayList<PeerNode>());
         this.failureSuspectedNodes = synchronizedList(new ArrayList<PeerNode>());
+        this.awaitingJoinAckNodes = synchronizedList(new ArrayList<PeerNode>());
     }
 
     public List<PeerNode> selectNodesRandomly(Integer selectionCount) {
-        if (registeredMemberNodes == null || registeredMemberNodes.size() == 0) return null;
+        if (registeredMemberNodes == null || registeredMemberNodes.size() == 0) return emptyList;
         if (selectionCount >= registeredMemberNodes.size())
             throw new RuntimeException("Registered members are less than requested member count");
         return selectNodes(selectionCount);

@@ -4,8 +4,11 @@ import org.flippers.peers.states.NodeState;
 import org.flippers.peers.states.NodeStateFactory;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class PeerNode {
 
@@ -70,8 +73,8 @@ public class PeerNode {
         transitionState(this.state, NodeStateFactory.getInstance().exitedState());
     }
 
-    public boolean isInteractionInitiatedWithinMilliSeconds(long secondsAgo) {
-        return this.interaction.isInteractionInitiatedWithinMilliSeconds(secondsAgo);
+    public boolean isInteractionInitiatedWithinMilliSeconds(long milliSecondsAgo) {
+        return this.interaction.isInteractionInitiatedWithinMilliSeconds(milliSecondsAgo);
     }
 
     public void setInteractionInitiated() {
@@ -110,4 +113,8 @@ public class PeerNode {
         this.state.publishStateTransition(this, observers, prevState);
     }
 
+    public static PeerNode nodeFor(String ipAddress, String port) throws UnknownHostException {
+        if (isEmpty(port)) throw new UnknownHostException("Port is missing for the host " + ipAddress);
+        return new PeerNode(InetAddress.getByName(ipAddress), Integer.valueOf(port));
+    }
 }

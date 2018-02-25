@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.flippers.config.Config.KeyNames.LISTEN_PORT;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class FileConfigTest {
 
@@ -70,5 +70,15 @@ public class FileConfigTest {
         String nonExistentName = this.overriddenConfig.getValue("flippers.app.name", appName);
 
         assertThat(nonExistentName, is("OverrideApp"));
+    }
+
+    @Test
+    public void shouldReturnArrayOfStringValuesForGetValues() {
+        String defaultSeed = null;
+        String[] nonExistentName = this.overriddenConfig.getValues("flippers.seed.nodes", defaultSeed);
+
+        assertThat(nonExistentName.length, is(2));
+        assertThat(nonExistentName[0], is("127.0.0.1:8081"));
+        assertThat(nonExistentName[1], is("127.0.0.1:8888"));
     }
 }

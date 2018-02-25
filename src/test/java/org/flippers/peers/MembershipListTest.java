@@ -58,7 +58,7 @@ public class MembershipListTest {
     public void shouldReturnNullWhenNoNodesAreRegistered() throws Exception {
         List<PeerNode> peerNodes = this.membershipList.selectNodesRandomly(1);
 
-        assertThat(peerNodes, is(nullValue()));
+        assertThat(peerNodes.size(), is(0));
     }
 
     @Test
