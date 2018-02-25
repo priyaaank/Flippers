@@ -58,7 +58,7 @@ public class MessageListenerTest {
         this.socket.close();
         peerAgent.sendPingMessage();
 
-        assertFalse(awaitMessageHandling.await(5, TimeUnit.SECONDS));
+        assertFalse(awaitMessageHandling.await(2, TimeUnit.SECONDS));
     }
 
     class MockPeerAgent {
