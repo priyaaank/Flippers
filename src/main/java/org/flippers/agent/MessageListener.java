@@ -30,7 +30,7 @@ public class MessageListener {
             new Thread(this::bindAgentToSocket).start();
             //fix this. We should countdown with a timeout
             countDownUntilBoundToPort.await();
-            LOGGER.debug("Listener bining complete. Listening for peers on port {}", socket.getPort());
+            LOGGER.debug("Listener binding complete. Listening for peers on port {}", socket.getPort());
         } catch (InterruptedException e) {
             shutdownInitiated = Boolean.TRUE;
             LOGGER.error("Interrupted while starting agent");
@@ -51,6 +51,7 @@ public class MessageListener {
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         } finally {
+            socket.close();
             LOGGER.debug("Agent is shut down!");
         }
     }
