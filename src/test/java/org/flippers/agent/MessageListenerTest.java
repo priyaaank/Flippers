@@ -41,7 +41,7 @@ public class MessageListenerTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         if (!socket.isClosed()) this.socket.close();
     }
 
@@ -58,7 +58,7 @@ public class MessageListenerTest {
         this.socket.close();
         peerAgent.sendPingMessage();
 
-        assertFalse(awaitMessageHandling.await(1, TimeUnit.SECONDS));
+        assertFalse(awaitMessageHandling.await(5, TimeUnit.SECONDS));
     }
 
     class MockPeerAgent {
