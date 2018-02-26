@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/priyaaank/Flippers.svg?branch=master)](https://travis-ci.org/priyaaank/Flippers) 
 [![Maintainability](https://api.codeclimate.com/v1/badges/e7252b5733ef6c7bca58/maintainability)](https://codeclimate.com/github/priyaaank/Flippers/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e7252b5733ef6c7bca58/test_coverage)](https://codeclimate.com/github/priyaaank/Flippers/test_coverage)
 
 # Implementation on SWIM Protocol
 
