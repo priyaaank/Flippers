@@ -1,7 +1,6 @@
 package org.flippers.peers;
 
 import org.flippers.peers.states.NodeState;
-import org.flippers.peers.states.NodeStateFactory;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -15,8 +14,8 @@ public class PeerNode {
     private InetAddress ipAddress;
     private Integer port;
     private NodeState state;
-    private List<NodeStateObserver> observers;
     private NodeInteraction interaction;
+    private List<NodeStateObserver> observers;
 
     public PeerNode(InetAddress ipAddress, Integer port) {
         this.ipAddress = ipAddress;
@@ -44,33 +43,33 @@ public class PeerNode {
 
     public void pingInitiated() {
         this.setInteractionInitiated();
-        transitionState(this.state, NodeStateFactory.getInstance().awaitingAckState());
+        transitionState(this.state, NodeState.AWAITING_ACK);
     }
 
     public void indirectPingInitiated() {
         this.setInteractionInitiated();
-        transitionState(this.state, NodeStateFactory.getInstance().awaitingIndirectAckState());
+        transitionState(this.state, NodeState.AWAITING_INDIRECT_ACK);
     }
 
     public void initJoining() {
-        transitionState(this.state, NodeStateFactory.getInstance().joinedState());
+        transitionState(this.state, NodeState.JOINED);
     }
 
     public void markAlive() {
-        transitionState(this.state, NodeStateFactory.getInstance().aliveState());
+        transitionState(this.state, NodeState.ALIVE);
     }
 
     public void markSuspect() {
         this.setInteractionInitiated();
-        transitionState(this.state, NodeStateFactory.getInstance().failureSuspectedState());
+        transitionState(this.state, NodeState.FAILURE_SUSPECTED);
     }
 
     public void markDead() {
-        transitionState(this.state, NodeStateFactory.getInstance().deadState());
+        transitionState(this.state, NodeState.DEAD);
     }
 
     public void markExited() {
-        transitionState(this.state, NodeStateFactory.getInstance().exitedState());
+        transitionState(this.state, NodeState.EXITED);
     }
 
     public boolean isInteractionInitiatedWithinMilliSeconds(long milliSecondsAgo) {
@@ -110,7 +109,7 @@ public class PeerNode {
 
     private void transitionState(NodeState prevState, NodeState toState) {
         this.state = toState;
-        this.state.publishStateTransition(this, observers, prevState);
+        this.state.transitionState(this, observers, prevState);
     }
 
     public static PeerNode nodeFor(String ipAddress, String port) throws UnknownHostException {

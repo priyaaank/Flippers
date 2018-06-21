@@ -57,7 +57,7 @@ public class MembershipList implements NodeStateObserver {
 
     public PeerNode forNode(PeerNode sourceNode) {
         int index;
-        if((index = this.registeredMemberNodes.indexOf(sourceNode)) > -1) return this.registeredMemberNodes.get(index);
+        if ((index = this.registeredMemberNodes.indexOf(sourceNode)) > -1) return this.registeredMemberNodes.get(index);
         return this.add(sourceNode);
     }
 

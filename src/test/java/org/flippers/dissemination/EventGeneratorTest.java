@@ -1,7 +1,7 @@
 package org.flippers.dissemination;
 
 import org.flippers.peers.PeerNode;
-import org.flippers.peers.states.*;
+import org.flippers.peers.states.NodeState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,8 +46,7 @@ public class EventGeneratorTest {
 
     @Test
     public void shouldGenerateJoinedEvent() {
-        this.eventGenerator.markJoined(peerNode, new Dead());
-
+        this.eventGenerator.markJoined(peerNode, NodeState.DEAD);
         verify(eventLog).enqueue(eventCaptor.capture());
         Event capturedEvent = eventCaptor.getValue();
 
@@ -57,7 +56,7 @@ public class EventGeneratorTest {
 
     @Test
     public void shouldGenerateDeadEvent() {
-        this.eventGenerator.markDead(peerNode, new FailureSuspected());
+        this.eventGenerator.markDead(peerNode, NodeState.FAILURE_SUSPECTED);
 
         verify(eventLog).enqueue(eventCaptor.capture());
         Event capturedEvent = eventCaptor.getValue();
@@ -68,7 +67,7 @@ public class EventGeneratorTest {
 
     @Test
     public void shouldGenerateExitedEvent() {
-        this.eventGenerator.markExited(peerNode, new Alive());
+        this.eventGenerator.markExited(peerNode, NodeState.ALIVE);
 
         verify(eventLog).enqueue(eventCaptor.capture());
         Event capturedEvent = eventCaptor.getValue();
@@ -79,7 +78,7 @@ public class EventGeneratorTest {
 
     @Test
     public void shouldGenerateSuspectEvent() {
-        this.eventGenerator.markFailureSuspected(peerNode, new AwaitingIndirectAck());
+        this.eventGenerator.markFailureSuspected(peerNode, NodeState.AWAITING_INDIRECT_ACK);
 
         verify(eventLog).enqueue(eventCaptor.capture());
         Event capturedEvent = eventCaptor.getValue();
@@ -90,7 +89,7 @@ public class EventGeneratorTest {
 
     @Test
     public void shouldGenerateAliveEvent() {
-        this.eventGenerator.markAlive(peerNode, new FailureSuspected());
+        this.eventGenerator.markAlive(peerNode, NodeState.FAILURE_SUSPECTED);
 
         verify(eventLog).enqueue(eventCaptor.capture());
         Event capturedEvent = eventCaptor.getValue();
@@ -101,14 +100,14 @@ public class EventGeneratorTest {
 
     @Test
     public void shouldNotGenerateAnyEventForPingInitiation() {
-        this.eventGenerator.markPingAwaited(peerNode, new Alive());
+        this.eventGenerator.markPingAwaited(peerNode, NodeState.ALIVE);
 
         verify(eventLog, never()).enqueue(any(Event.class));
     }
 
     @Test
     public void shouldNotGenerateAnyEventForIndirectPingInitiation() throws Exception {
-        this.eventGenerator.markIndirectPingAwaited(peerNode, new AwaitingAck());
+        this.eventGenerator.markIndirectPingAwaited(peerNode, NodeState.AWAITING_ACK);
 
         verify(eventLog, never()).enqueue(any(Event.class));
     }

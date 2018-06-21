@@ -2,9 +2,6 @@ package org.flippers.dissemination;
 
 import org.flippers.peers.NodeStateObserver;
 import org.flippers.peers.PeerNode;
-import org.flippers.peers.states.AwaitingAck;
-import org.flippers.peers.states.AwaitingIndirectAck;
-import org.flippers.peers.states.Joined;
 import org.flippers.peers.states.NodeState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +29,7 @@ public class EventGenerator implements NodeStateObserver {
 
     @Override
     public void markAlive(PeerNode peerNode, NodeState fromState) {
-        if(fromState instanceof AwaitingAck || fromState instanceof AwaitingIndirectAck || fromState instanceof Joined) {
+        if (fromState == NodeState.AWAITING_ACK || fromState == NodeState.AWAITING_INDIRECT_ACK || fromState == NodeState.JOINED) {
             LOGGER.debug("Node {} does not seem to be dead. Ignoring its alive status", peerNode);
             return;
         }
