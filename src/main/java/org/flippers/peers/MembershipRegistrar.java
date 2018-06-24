@@ -7,6 +7,7 @@ import org.flippers.messages.MessageCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
@@ -39,7 +40,7 @@ public class MembershipRegistrar {
     private void sendJoinMessage(String ipAddress, String port) {
         DataMessage dataMessage;
         try {
-            dataMessage = this.messageCreator.craftJoinMessage(PeerNode.nodeFor(ipAddress, port));
+            dataMessage = this.messageCreator.craftJoinMessage(PeerNode.nodeFor(InetAddress.getByName(ipAddress), port));
             sender.send(dataMessage);
         } catch (UnknownHostException e) {
             LOGGER.error("Could not find host at ip {} and port {}. Exception {}", ipAddress, port, e.getMessage());

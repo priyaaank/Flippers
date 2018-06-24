@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import static org.flippers.messages.MessageType.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -15,45 +14,44 @@ import static org.junit.Assert.assertThat;
 public class MessageCreatorTest {
 
     private MessageCreator messageCreator;
-    private PeerNode peerNode;
+    private PeerNode peerNodeAlpha;
     private FileConfig config;
+    private PeerNode peerNodeBeta;
 
     @Before
     public void setUp() throws Exception {
         this.config = new FileConfig();
-        this.messageCreator = new MessageCreator(config);
-        peerNode = new PeerNode(InetAddress.getLocalHost(), 8083);
+        this.peerNodeBeta = PeerNode.nodeFor(InetAddress.getLocalHost(), 8000);
+        this.peerNodeAlpha = new PeerNode(InetAddress.getLocalHost(), 8083);
+        this.messageCreator = new MessageCreator(config, peerNodeAlpha);
     }
 
     @Test
-    public void shouldCraftAMessageForPing() throws UnknownHostException {
-        DataMessage pingMessage = messageCreator.craftPingMsg(peerNode);
+    public void shouldCraftAMessageForPing() {
+        DataMessage pingMessage = messageCreator.craftPingMsg(peerNodeBeta);
 
         assertThat(pingMessage.getMessageType(), is(PING));
-        assertThat(pingMessage.getSourceAddress(), is(InetAddress.getLocalHost()));
-        assertThat(pingMessage.getDestinationPort(), is(8083));
-        assertThat(pingMessage.getSourcePort(), is(8000));
+        assertThat(pingMessage.getSourceNode(), is(peerNodeAlpha));
+        assertThat(pingMessage.getDestinationNode(), is(this.peerNodeBeta));
     }
 
     @Test
-    public void shouldCraftAMessageForIndirectPing() throws UnknownHostException {
-        DataMessage indirectPingMsg = messageCreator.craftIndirectPingMsg(peerNode);
+    public void shouldCraftAMessageForIndirectPing() {
+        DataMessage indirectPingMsg = messageCreator.craftIndirectPingMsg(peerNodeBeta);
 
         assertThat(indirectPingMsg.getMessageType(), is(PING_REQ));
-        assertThat(indirectPingMsg.getSourceAddress(), is(InetAddress.getLocalHost()));
-        assertThat(indirectPingMsg.getDestinationPort(), is(8083));
-        assertThat(indirectPingMsg.getSourcePort(), is(8000));
+        assertThat(indirectPingMsg.getSourceNode(), is(peerNodeAlpha));
+        assertThat(indirectPingMsg.getDestinationNode(), is(peerNodeBeta));
     }
 
     @Test
-    public void shouldCraftAMessageForAnAckResponse() throws UnknownHostException {
-        DataMessage pingMessage = messageCreator.craftPingMsg(peerNode);
-        DataMessage ackResponse = messageCreator.ackResponseForPingMsg(pingMessage);
+    public void shouldCraftAMessageForAnAckResponse() {
+        DataMessage pingMessage = messageCreator.craftPingMsg(peerNodeBeta);
+        DataMessage ackResponse = new MessageCreator(config, peerNodeBeta).ackResponseForPingMsg(pingMessage);
 
         assertThat(ackResponse.getMessageType(), is(ACK));
-        assertThat(ackResponse.getSourceAddress(), is(InetAddress.getLocalHost()));
-        assertThat(ackResponse.getDestinationPort(), is(8000));
-        assertThat(ackResponse.getSourcePort(), is(8000));
+        assertThat(ackResponse.getDestinationNode(), is(peerNodeAlpha));
+        assertThat(ackResponse.getSourceNode(), is(peerNodeBeta));
     }
 
 }

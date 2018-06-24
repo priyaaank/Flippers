@@ -9,11 +9,14 @@ import org.flippers.handlers.MessageTypeRegistry;
 import org.flippers.messages.MessageCreator;
 import org.flippers.peers.MembershipList;
 import org.flippers.peers.MembershipRegistrar;
+import org.flippers.peers.PeerNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -27,6 +30,7 @@ public class FlipperAgent {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FlipperAgent.class);
 
+    private final PeerNode thisNode;
     private ExecutorService executorService;
     private HandlerExecutor handlerExecutor;
     private MessageListener listener;
@@ -39,22 +43,23 @@ public class FlipperAgent {
     private MembershipRegistrar registrar;
     private AtomicBoolean shutdownInitiated = new AtomicBoolean(Boolean.FALSE);
 
-    public FlipperAgent(FileConfig config) throws SocketException {
-        MessageCreator messageCreator = new MessageCreator(config);
+    public FlipperAgent(FileConfig config) throws SocketException, UnknownHostException {
+        thisNode = new PeerNode(InetAddress.getLocalHost(), config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT));
+        MessageCreator messageCreator = new MessageCreator(config, thisNode);
         this.socket = new DatagramSocket(config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT));
         Integer corePoolSize = config.getValue(THREAD_POOL_SIZE, DEFAULT_THREAD_POOL_COUNT);
         this.eventGenerator = new EventGenerator(new EventLog(config));
         this.membershipList = new MembershipList(config, this.eventGenerator);
         this.executorService = Executors.newFixedThreadPool(corePoolSize);
         this.sender = new MessageSender(this.socket, this.executorService);
-        this.registry = new MessageTypeRegistry(this.sender, config, this.membershipList);
+        this.registry = new MessageTypeRegistry(this.sender, config, this.membershipList, messageCreator);
         this.handlerExecutor = new MessageHandlerExecutor(executorService, registry);
         this.listener = new MessageListener(this.socket, this.handlerExecutor);
         this.registrar = new MembershipRegistrar(config, sender, messageCreator);
         this.failureDetector = new FailureDetector(Executors.newScheduledThreadPool(corePoolSize), this.membershipList, this.sender, messageCreator, config);
     }
 
-    public FlipperAgent() throws SocketException {
+    public FlipperAgent() throws SocketException, UnknownHostException {
         this(new FileConfig());
     }
 

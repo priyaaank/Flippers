@@ -5,74 +5,72 @@ import org.flippers.peers.PeerNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.bind.annotation.XmlType;
 import java.net.DatagramPacket;
-import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class DataMessage {
 
     static Logger LOGGER = LoggerFactory.getLogger(DataMessage.class);
-    static Integer DEFAULT_LISTEN_PORT = 8383;
-    private Integer sourcePort;
     private String sequenceNumber;
-    private InetAddress sourceAddress;
+    private PeerNode sourceNode;
+    private PeerNode destinationNode;
     private MessageType messageType;
-    private Integer destinationPort;
 
-    public  DataMessage(String sequenceNumber, InetAddress address, MessageType messageType, Integer destinationPort, Integer sourcePort) {
+    public DataMessage(String sequenceNumber, PeerNode sourceNode, MessageType messageType, PeerNode destinationNode) {
         this.sequenceNumber = sequenceNumber;
-        this.sourceAddress = address;
+        this.sourceNode = sourceNode;
         this.messageType = messageType;
-        this.destinationPort = destinationPort;
-        this.sourcePort = sourcePort;
+        this.destinationNode = destinationNode;
+    }
+
+    public DataMessage(String sequenceNumber, PeerNode sourceNode, MessageType messageType) {
+        this.sequenceNumber = sequenceNumber;
+        this.sourceNode = sourceNode;
+        this.messageType = messageType;
+        this.destinationNode = null;
     }
 
     public DatagramPacket toDatagramPacket() {
         MessageProtos.Message message = MessageProtos.Message.newBuilder()
                 .setSequenceNumber(this.sequenceNumber)
                 .setType(MessageProtos.Message.MessageType.valueOf(this.messageType.toString()))
-                .setListenPort(this.sourcePort)
+                .setSender(MessageProtos.NodeInfo
+                        .newBuilder()
+                        .setIpAddress(this.sourceNode.getIpAddress().toString())
+                        .setPort(this.sourceNode.getPort())
+                        .build())
                 .build();
         byte[] rawData = message.toByteArray();
-        return new DatagramPacket(rawData, rawData.length, this.sourceAddress, this.destinationPort);
-    }
-
-    public Integer getSourcePort() {
-        return sourcePort;
+        return new DatagramPacket(rawData, rawData.length, this.destinationNode.getIpAddress(), this.destinationNode.getPort());
     }
 
     public String getSequenceNumber() {
         return sequenceNumber;
     }
 
-    public InetAddress getSourceAddress() {
-        return sourceAddress;
+    public PeerNode getSourceNode() {
+        return sourceNode;
+    }
+
+    public PeerNode getDestinationNode() {
+        return destinationNode;
     }
 
     public MessageType getMessageType() {
         return messageType;
     }
 
-    public Integer getDestinationPort() {
-        return destinationPort;
-    }
 
-    public PeerNode getSourceNode() {
-        return new PeerNode(this.sourceAddress, this.sourcePort);
-    }
-
-    public static DataMessage fromReceivedDatagram(DatagramPacket datagramPacket) {
-        if(datagramPacket == null) return null;
+    public static DataMessage fromReceivedDatagram(DatagramPacket datagramPacket) throws UnknownHostException {
+        if (datagramPacket == null) return null;
 
         MessageProtos.Message decodedMessage = decode(datagramPacket);
 
-        if(decodedMessage == null) return null;
+        if (decodedMessage == null) return null;
 
         return new DataMessage(decodedMessage.getSequenceNumber(),
-                datagramPacket.getAddress(),
-                MessageType.valueOf(decodedMessage.getType().toString()),
-                DEFAULT_LISTEN_PORT,
-                decodedMessage.getListenPort());
+                PeerNode.nodeFor(datagramPacket.getAddress(), datagramPacket.getPort()),
+                MessageType.valueOf(decodedMessage.getType().toString()));
     }
 
     private static MessageProtos.Message decode(DatagramPacket packet) {

@@ -8,23 +8,26 @@ option java_outer_classname = "MessageProtos";
 message Message {
 
     MessageType type = 1;
-    string sequenceNumber = 2;
-    int32 listenPort = 3;
-    repeated AdditionalInfo nodesInfo = 4;
+    string sequenceNumber = 3;
+    NodeInfo sender = 4;
+    repeated NodeInfo nodesInfo = 5;
 
     enum MessageType {
         PING = 0;
         ACK = 1;
         PING_NODE = 2;
+        JOIN = 3;
+        LEAVE = 4;
     };
 
 }
 
-message AdditionalInfo {
+message NodeInfo {
 
     string ipAddress = 1;
-    int32 port = 2;
-    InfoType type = 3;
+    string nodeId = 2;
+    int32 port = 3;
+    InfoType type = 4;
 
     enum InfoType {
         ALIVE = 0;

@@ -1,5 +1,6 @@
 package org.flippers.peers;
 
+import org.flippers.messages.MessageProtos;
 import org.flippers.peers.states.NodeState;
 
 import java.net.InetAddress;
@@ -11,6 +12,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class PeerNode {
 
+    private String nodeId;
     private InetAddress ipAddress;
     private Integer port;
     private NodeState state;
@@ -21,6 +23,10 @@ public class PeerNode {
         this.ipAddress = ipAddress;
         this.port = port;
         this.observers = new CopyOnWriteArrayList<>();
+    }
+
+    public static PeerNode from(MessageProtos.NodeInfo nodeInfo) {
+        return null;
     }
 
     public void registerObserver(NodeStateObserver observer) {
@@ -49,6 +55,10 @@ public class PeerNode {
     public void indirectPingInitiated() {
         this.setInteractionInitiated();
         transitionState(this.state, NodeState.AWAITING_INDIRECT_ACK);
+    }
+
+    public String getNodeId() {
+        return nodeId;
     }
 
     public void initJoining() {
@@ -112,8 +122,22 @@ public class PeerNode {
         this.state.transitionState(this, observers, prevState);
     }
 
-    public static PeerNode nodeFor(String ipAddress, String port) throws UnknownHostException {
+    public static PeerNode nodeFor(InetAddress ipAddress, int port) throws UnknownHostException {
+        if (port <= -1) throw new UnknownHostException("Port is missing for the host " + ipAddress);
+        return new PeerNode(ipAddress, port);
+    }
+
+    public static PeerNode nodeFor(InetAddress ipAddress, String port) throws UnknownHostException {
         if (isEmpty(port)) throw new UnknownHostException("Port is missing for the host " + ipAddress);
-        return new PeerNode(InetAddress.getByName(ipAddress), Integer.valueOf(port));
+        return nodeFor(ipAddress, Integer.valueOf(port));
+    }
+
+    public MessageProtos.NodeInfo toNodeInfo() {
+        return MessageProtos.NodeInfo.newBuilder()
+                .setNodeId(this.nodeId)
+                .setPort(this.port)
+                .setIpAddress(this.ipAddress.toString())
+                .setType(MessageProtos.NodeInfo.InfoType.ALIVE)
+                .build();
     }
 }

@@ -4,11 +4,11 @@ import org.flippers.config.FileConfig;
 import org.flippers.handlers.HandlerExecutor;
 import org.flippers.messages.DataMessage;
 import org.flippers.messages.MessageType;
+import org.flippers.peers.PeerNode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.concurrent.CountDownLatch;
@@ -31,6 +31,8 @@ public class FlipperAgentTest {
     private CountDownLatch awaitUntilAckReceived = new CountDownLatch(1);
     private MessageListener testingAgentListener;
     private MessageSender testingAgentSender;
+    private PeerNode testingNode;
+    private PeerNode nodeBeingTested;
 
     @Before
     public void setUp() throws Exception {
@@ -42,10 +44,12 @@ public class FlipperAgentTest {
         this.testingAgentListener = new MessageListener(this.socket, this.receivedReceivedMessageHandler);
         this.testingAgentListener.beginAccepting();
         this.testingAgentSender = new MessageSender(this.socket, Executors.newSingleThreadExecutor());
+        this.testingNode = PeerNode.nodeFor(localIpAddress, this.portForTestingAgent);
+        this.nodeBeingTested = PeerNode.nodeFor(localIpAddress, this.portForAgentUnderTest);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         peerAgentUnderTest.stop();
         this.socket.close();
     }
@@ -58,12 +62,11 @@ public class FlipperAgentTest {
         DataMessage receivedMessage = this.receivedReceivedMessageHandler.message;
         assertThat(receivedMessage.getMessageType(), is(MessageType.ACK));
         assertThat(receivedMessage.getSequenceNumber(), is("123"));
-        assertThat(receivedMessage.getSourceAddress().getHostAddress(), is(localIpAddress.getHostAddress()));
-        assertThat(receivedMessage.getSourcePort(), is(this.portForAgentUnderTest));
+        assertThat(receivedMessage.getSourceNode(), is(nodeBeingTested));
     }
 
-    private void sendPingMessage() throws IOException {
-        DataMessage message = new DataMessage("123", localIpAddress, MessageType.PING, this.portForAgentUnderTest, this.portForTestingAgent);
+    private void sendPingMessage() {
+        DataMessage message = new DataMessage("123", testingNode, MessageType.PING, nodeBeingTested);
         this.testingAgentSender.send(message);
     }
 

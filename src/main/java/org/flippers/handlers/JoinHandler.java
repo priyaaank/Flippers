@@ -12,10 +12,10 @@ public class JoinHandler implements Handler {
     private final MembershipList membershipList;
     private final MessageCreator messageCreator;
 
-    public JoinHandler(MessageSender sender, MembershipList membershipList, Config config) {
+    public JoinHandler(MessageSender sender, MembershipList membershipList, MessageCreator messageCreator) {
         this.sender = sender;
         this.membershipList = membershipList;
-        this.messageCreator = new MessageCreator(config);
+        this.messageCreator = messageCreator;
     }
 
     @Override

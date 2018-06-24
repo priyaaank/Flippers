@@ -4,6 +4,7 @@ import org.flippers.agent.MessageSender;
 import org.flippers.config.Config;
 import org.flippers.config.FileConfig;
 import org.flippers.messages.DataMessage;
+import org.flippers.messages.MessageCreator;
 import org.flippers.messages.MessageType;
 import org.flippers.peers.MembershipList;
 import org.flippers.peers.PeerNode;
@@ -16,6 +17,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.xml.crypto.Data;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -24,6 +26,9 @@ import static org.flippers.messages.MessageType.ACK_JOIN;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,11 +50,18 @@ public class JoinHandlerTest {
     @Captor
     private ArgumentCaptor<DataMessage> messageCaptor;
 
+    @Mock
+    private MessageCreator messageCreator;
+
+    @Mock
+    private DataMessage mockAckMessage;
+
     @Before
     public void setUp() {
         this.fileConfig = new FileConfig();
-        this.joinHandler = new JoinHandler(sender, membershipList, fileConfig);
-        when(membershipList.forNode(Matchers.any(PeerNode.class))).thenReturn(peerNode);
+        this.joinHandler = new JoinHandler(sender, membershipList, messageCreator);
+        when(membershipList.forNode(any(PeerNode.class))).thenReturn(peerNode);
+        when(messageCreator.ackResponseForJoinMsg(any(DataMessage.class))).thenReturn(mockAckMessage);
     }
 
     @Test
@@ -66,10 +78,7 @@ public class JoinHandlerTest {
         verify(sender).send(messageCaptor.capture());
         DataMessage ackMessage = messageCaptor.getValue();
 
-        assertThat(ackMessage.getMessageType(), is(ACK_JOIN));
-        assertThat(ackMessage.getDestinationPort(), is(8383));
-        assertThat(ackMessage.getSourcePort(), is(8000));
-        assertThat(ackMessage.getSourceAddress(), is(InetAddress.getLocalHost()));
+        assertThat(ackMessage, is(mockAckMessage));
     }
 
     @Test
@@ -83,7 +92,7 @@ public class JoinHandlerTest {
     }
 
     private DataMessage getJoinMessage(String sequenceNumber) throws UnknownHostException {
-        return new DataMessage(sequenceNumber, InetAddress.getLocalHost(),
-                MessageType.JOIN, DEFAULT_LISTEN_PORT, DEFAULT_LISTEN_PORT);
+        return new DataMessage(sequenceNumber, PeerNode.nodeFor(InetAddress.getLocalHost(), 8000),
+                MessageType.JOIN, PeerNode.nodeFor(InetAddress.getLocalHost(), 8383));
     }
 }

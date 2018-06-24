@@ -3,48 +3,42 @@ package org.flippers.messages;
 import org.flippers.config.Config;
 import org.flippers.peers.PeerNode;
 
-import javax.xml.crypto.Data;
-
-import static org.flippers.config.Config.DefaultValues.DEFAULT_LISTEN_PORT;
-import static org.flippers.config.Config.KeyNames.LISTEN_PORT;
-
 public class MessageCreator {
 
     private final SequenceNumberGenerator sequenceNumberGenerator;
     private Config config;
+    private PeerNode thisNode;
 
-    public MessageCreator(Config config) {
+    public MessageCreator(final Config config, final PeerNode thisNode) {
         this.config = config;
+        this.thisNode = thisNode;
         this.sequenceNumberGenerator = new SequenceNumberGenerator();
     }
 
     public DataMessage ackResponseForPingMsg(DataMessage receivedMessage) {
         return new DataMessage(
                 receivedMessage.getSequenceNumber(),
-                receivedMessage.getSourceAddress(),
+                this.thisNode,
                 MessageType.ACK,
-                receivedMessage.getSourcePort(),
-                config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
+                receivedMessage.getSourceNode()
         );
     }
 
-    public DataMessage craftPingMsg(PeerNode node) {
+    public DataMessage craftPingMsg(PeerNode destinationNode) {
         return new DataMessage(
                 sequenceNumberGenerator.uniqSequence(),
-                node.getIpAddress(),
+                this.thisNode,
                 MessageType.PING,
-                node.getPort(),
-                config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
+                destinationNode
         );
     }
 
-    public DataMessage craftIndirectPingMsg(PeerNode node) {
+    public DataMessage craftIndirectPingMsg(PeerNode destinationNode) {
         return new DataMessage(
                 sequenceNumberGenerator.uniqSequence(),
-                node.getIpAddress(),
+                this.thisNode,
                 MessageType.PING_REQ,
-                node.getPort(),
-                config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
+                destinationNode //Should this be the destination node or suspect node?
         );
     }
 
@@ -54,20 +48,18 @@ public class MessageCreator {
         //list
         return new DataMessage(
                 sequenceNumberGenerator.uniqSequence(),
-                joinMessage.getSourceAddress(),
+                this.thisNode,
                 MessageType.ACK_JOIN,
-                joinMessage.getSourcePort(),
-                config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
+                joinMessage.getSourceNode()
         );
     }
 
     public DataMessage craftJoinMessage(PeerNode seedNode) {
         return new DataMessage(
                 sequenceNumberGenerator.uniqSequence(),
-                seedNode.getIpAddress(),
+                this.thisNode,
                 MessageType.JOIN,
-                seedNode.getPort(),
-                config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)
+                seedNode
         );
     }
 }

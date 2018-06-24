@@ -2,6 +2,7 @@ package org.flippers.handlers;
 
 import org.flippers.agent.MessageSender;
 import org.flippers.config.FileConfig;
+import org.flippers.messages.MessageCreator;
 import org.flippers.messages.MessageType;
 import org.flippers.peers.MembershipList;
 import org.junit.Before;
@@ -26,9 +27,12 @@ public class MessageTypeRegistryTest {
     @Mock
     private FileConfig config;
 
+    @Mock
+    private MessageCreator messageCreator;
+
     @Before
     public void setUp() {
-        messageTypeRegistry = new MessageTypeRegistry(sender, config, membershipList);
+        messageTypeRegistry = new MessageTypeRegistry(sender, config, membershipList, messageCreator);
     }
 
     @Test

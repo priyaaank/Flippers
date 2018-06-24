@@ -10,9 +10,9 @@ public class PingHandler implements Handler {
     private MessageSender sender;
     private MessageCreator messageCreator;
 
-    public PingHandler(MessageSender sender, FileConfig config) {
+    public PingHandler(MessageSender sender, MessageCreator messageCreator) {
         this.sender = sender;
-        this.messageCreator = new MessageCreator(config);
+        this.messageCreator = messageCreator;
     }
 
     @Override

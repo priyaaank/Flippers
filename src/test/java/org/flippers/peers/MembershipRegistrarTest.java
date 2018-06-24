@@ -41,11 +41,14 @@ public class MembershipRegistrarTest {
 
     private MembershipRegistrar registrar;
 
+    private PeerNode testNode;
+
     @Before
-    public void setUp() {
+    public void setUp() throws UnknownHostException {
         when(config.getValues(SEED_NODES, DEFAULT_SEED_NODES)).thenReturn(new String[]{"127.0.0.1:8081"});
         when(config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)).thenReturn(DEFAULT_LISTEN_PORT);
-        this.messageCreator = new MessageCreator(config);
+        this.testNode = new PeerNode(InetAddress.getLocalHost(), DEFAULT_LISTEN_PORT);
+        this.messageCreator = new MessageCreator(config, testNode);
         this.registrar = new MembershipRegistrar(config, sender, messageCreator);
     }
 
@@ -57,9 +60,8 @@ public class MembershipRegistrarTest {
         DataMessage value = messageCaptor.getValue();
 
         assertThat(value.getMessageType(), is(JOIN));
-        assertThat(value.getSourcePort(), is(DEFAULT_LISTEN_PORT));
-        assertThat(value.getDestinationPort(), is(8081));
-        assertThat(value.getSourceAddress(), is(InetAddress.getByName("127.0.0.1")));
+        assertThat(value.getSourceNode(), is(this.testNode));
+        assertThat(value.getDestinationNode().getPort(), is(8081));
     }
 
     @Test

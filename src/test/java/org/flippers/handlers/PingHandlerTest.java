@@ -3,7 +3,9 @@ package org.flippers.handlers;
 import org.flippers.agent.MessageSender;
 import org.flippers.config.FileConfig;
 import org.flippers.messages.DataMessage;
+import org.flippers.messages.MessageCreator;
 import org.flippers.messages.MessageType;
+import org.flippers.peers.PeerNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +21,7 @@ import static org.flippers.config.Config.KeyNames.LISTEN_PORT;
 import static org.flippers.messages.MessageType.ACK;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,28 +41,35 @@ public class PingHandlerTest {
     @Mock
     InetAddress mockAddress;
 
+    @Mock
+    MessageCreator messageCreator;
+
     @Captor
     ArgumentCaptor<DataMessage> messageCaptor;
 
+    @Mock
+    DataMessage mockDataMessage;
+
+    PeerNode currentNode;
+
+    PeerNode peerNode;
+
     @Before
-    public void setUp() throws Exception {
-        this.pingHandler = new PingHandler(sender, config);
+    public void setUp() {
+        this.pingHandler = new PingHandler(sender, messageCreator);
         when(config.getValue(LISTEN_PORT, DEFAULT_LISTEN_PORT)).thenReturn(DESTINATION_PORT);
+        when(messageCreator.ackResponseForPingMsg(any(DataMessage.class))).thenReturn(mockDataMessage);
     }
 
     @Test
     public void shouldResponseWithAnAckMessage() throws Exception {
         String sequenceNumber = "1234";
-        DataMessage message = new DataMessage(sequenceNumber, mockAddress, MessageType.PING, DESTINATION_PORT, SOURCE_PORT);
+        DataMessage message = new DataMessage(sequenceNumber, peerNode, MessageType.PING, currentNode);
         this.pingHandler.handle(message);
 
         verify(sender).send(messageCaptor.capture());
         DataMessage interceptedMessage = messageCaptor.getValue();
 
-        assertThat(interceptedMessage.getMessageType(), is(ACK));
-        assertThat(interceptedMessage.getSourceAddress(), is(mockAddress));
-        assertThat(interceptedMessage.getSequenceNumber(), is(sequenceNumber));
-        assertThat(interceptedMessage.getSourcePort(), is(DESTINATION_PORT));
-        assertThat(interceptedMessage.getDestinationPort(), is(SOURCE_PORT));
+        assertThat(interceptedMessage, is(mockDataMessage));
     }
 }
